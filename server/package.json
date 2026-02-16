@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "test": "start"
+    "start": "nodemon app.js"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
