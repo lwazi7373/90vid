@@ -2,6 +2,7 @@ require('dotenv').config();
 const mysql = require('mysql2/promise'); 
 
 // Connection to your own db 
+// See .env file
 const mysqlPool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
