@@ -3,7 +3,7 @@ USE media;
 
 CREATE TABLE Users (
     userId INT AUTO_INCREMENT PRIMARY KEY,
-    userName VARCHAR(50) NOT NULL,
+    userName VARCHAR(50) UNIQUE NOT NULL,
     userPassword VARCHAR(255) NOT NULL,
     emailAddress VARCHAR(100) UNIQUE NOT NULL,
     contactNo VARCHAR(15),
@@ -40,8 +40,13 @@ CREATE TABLE RoomPermissions (
     roomId INT NOT NULL,
     userId INT NOT NULL,
     canUpload BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (roomId) REFERENCES Rooms(roomId),
-    FOREIGN KEY (userId) REFERENCES Users(userId),
+    canDelete BOOLEAN DEFAULT FALSE,
+    canEditRoom BOOLEAN DEFAULT FALSE,  
+    grantedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    grantedBy INT, 
+    FOREIGN KEY (roomId) REFERENCES Rooms(roomId) ON DELETE CASCADE,
+    FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE,
+    FOREIGN KEY (grantedBy) REFERENCES Users(userId),
     UNIQUE KEY unique_room_user (roomId, userId)
 );
 
