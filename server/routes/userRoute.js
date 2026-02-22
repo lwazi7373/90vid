@@ -10,11 +10,5 @@ const authenticateToken = require("../middleware/authMiddleware");
  */
 router.get("/users/me", authenticateToken, userController.getMe);
 
-/**
- * GET /api/users/:userId
- * Get a user's public profile
- */
-router.get("/users/:userId", authenticateToken, userController.getUser);
-
 module.exports = router;
 
