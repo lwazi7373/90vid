@@ -18,7 +18,7 @@ router.post("/auth/login", authController.login);
 
 /**
  * Will probably handle logout on client side, but for now just incase
- * A different option is available
+ * A different "commented out" option is available
  * POST /api/auth/logout
  */
 // router.post("/auth/logout", authController.logout);
