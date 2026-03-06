@@ -1,5 +1,5 @@
 //Database connection
-const connectDB = require("../db/connect");
+const connectDB = require("../db/Connect");
 
 /**
  * Service to register a user to the database

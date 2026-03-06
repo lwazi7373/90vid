@@ -1,4 +1,4 @@
-const connectDB = require("../db/connect");
+const connectDB = require("../db/Connect");
 const { notFound } = require("../errors/httpErrors");
 
 /**
