@@ -8,7 +8,6 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(body_parser.json());
 app.use(cors({ origin: true }));
-app.use(errorHandler);
 
 const connectDB = require('./db/Connect');
 
@@ -25,6 +24,8 @@ app.use("/api/", searchRoutes);
 app.use("/api/", mediaRoutes);
 app.use("/api/", permissionRoutes);
 app.use("/api/", roomRoutes);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
