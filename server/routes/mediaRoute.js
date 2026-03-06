@@ -3,52 +3,62 @@ const router = express.Router();
 
 const mediaController = require("../controllers/mediaController");
 const authenticateToken = require("../middleware/authMiddleware");
+const { imageUpload } = require("../middleware/uploadMiddleware");
 
 /**
  * GET /api/rooms/:roomId/images
- * Get the images in the room
+ * Get all images in the room
  */
 router.get("/rooms/:roomId/images", authenticateToken, mediaController.getImages);
 
 /**
  * GET /api/rooms/:roomId/images/:imageId
- * Get the image (when in focus)
+ * Get a single image (when in focus)
  */
 router.get("/rooms/:roomId/images/:imageId", authenticateToken, mediaController.getImage);
 
 /**
  * GET /api/rooms/:roomId/videos
- * Get the videos in the room
+ * Get all videos in the room
  */
 router.get("/rooms/:roomId/videos", authenticateToken, mediaController.getVideos);
 
 /**
  * GET /api/rooms/:roomId/videos/:videoId
- * Get the video (when in focus)
+ * Get a single video (when in focus)
  */
-router.get("/rooms/:roomId/videos", authenticateToken, mediaController.getVideo);
+router.get("/rooms/:roomId/videos/:videoId", authenticateToken, mediaController.getVideo);
 
 /**
  * POST /api/rooms/:roomId/images
- * Upload images to a room (basically post images) -> (if creator or has canUpload permission)
+ * Upload an image to a room -> (if creator or has canUpload permission)
+ * imageUpload.single("image") tells multer to expect one file under the field name "image"
  */
-router.post("/rooms/:roomId/images", authenticateToken, mediaController.postImages);
+router.post("/rooms/:roomId/images", authenticateToken, imageUpload.single("image"), mediaController.postImage);
 
 /**
- * POST /api/rooms/:roomId/videos
- * Upload videos to a room (basically post videos) -> (if creator or has canUpload permission)
+ * POST /api/rooms/:roomId/videos/presigned-url
+ * Step 1 of video upload — checks permissions and returns a presigned S3 URL
+ * Client uses that URL to upload the video file directly to S3
  */
-router.post("/rooms/:roomId/videos", authenticateToken, mediaController.postVideos);
+router.post("/rooms/:roomId/videos/presigned-url", authenticateToken, mediaController.getVideoUploadUrl);
+
+/**
+ * POST /api/rooms/:roomId/videos/confirm
+ * Step 2 of video upload — client calls this after successfully uploading to S3
+ * Saves the video metadata (title, fileUrl, etc.) to the DB
+ */
+router.post("/rooms/:roomId/videos/confirm", authenticateToken, mediaController.postVideo);
 
 /**
  * DELETE /api/rooms/:roomId/images/:imageId
- * Delete an image from the room (basically takedown an image) -> (if creator or has canDelete permission)
+ * Delete an image from the room -> (if creator or has canDelete permission)
  */
 router.delete("/rooms/:roomId/images/:imageId", authenticateToken, mediaController.removeImage);
 
 /**
  * DELETE /api/rooms/:roomId/videos/:videoId
- * Delete a video from the room (basically takedown a video) -> (if creator or has canDelete permission)
+ * Delete a video from the room -> (if creator or has canDelete permission)
  */
 router.delete("/rooms/:roomId/videos/:videoId", authenticateToken, mediaController.removeVideo);
 
