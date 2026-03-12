@@ -1,6 +1,6 @@
 const connectDB = require("../db/Connect");
 const { uploadToS3, deleteFromS3, generatePresignedUrl } = require("../utils/s3Helpers");
-const {badRequest, unauthorized, forbidden, notFound, conflict} = require("../errors/httpErrors");
+const {badRequest, forbidden, notFound} = require("../errors/httpErrors");
 
 ////////////////////////////////////////////////////////// Utility methods /////////////////////////////////////////////////////////////////////
 /**
@@ -35,12 +35,12 @@ const getRoomPermission = async (db, roomId, userId) => {
 };
 
 /**
- * 
- * @param {*} room 
- * @param {*} permission 
- * @param {*} userId 
- * @param {*} permissionKey 
- * @returns 
+ * Assess the permission the user has
+ * @param {room} room 
+ * @param {boolean or null} permission 
+ * @param {Number} userId 
+ * @param {String} permissionKey 
+ * @returns boolean
  */
 const hasAccess = (room, permission, userId, permissionKey) => {
   if (room.createdBy === userId) return true;
