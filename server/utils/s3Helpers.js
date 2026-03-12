@@ -5,6 +5,7 @@
  */
 
 const { PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { v4: uuidv4 } = require("uuid");
 const s3 = require("../config/s3");
 
