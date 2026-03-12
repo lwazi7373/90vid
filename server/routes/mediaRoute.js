@@ -3,7 +3,7 @@ const router = express.Router();
 
 const mediaController = require("../controllers/mediaController");
 const authenticateToken = require("../middleware/authMiddleware");
-const { imageUpload } = require("../middleware/uploadMiddleware");
+const { imageUpload, handleUploadError } = require("../middleware/uploadMiddleware");
 
 /**
  * GET /api/rooms/:roomId/images
@@ -34,7 +34,7 @@ router.get("/rooms/:roomId/videos/:videoId", authenticateToken, mediaController.
  * Upload an image to a room -> (if creator or has canUpload permission)
  * imageUpload.single("image") tells multer to expect one file under the field name "image"
  */
-router.post("/rooms/:roomId/images", authenticateToken, imageUpload.single("image"), mediaController.postImage);
+router.post("/rooms/:roomId/images", authenticateToken, imageUpload.single("image"), handleUploadError, mediaController.postImage);
 
 /**
  * POST /api/rooms/:roomId/videos/presigned-url
