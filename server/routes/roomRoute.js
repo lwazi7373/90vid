@@ -20,7 +20,7 @@ router.post("/rooms", authenticateToken, roomController.createRoom);
  * GET /api/rooms/:roomId
  * Get a specific room 
  */
-router.get("/:roomId", authenticateToken, roomController.getRoom);
+router.get("/rooms/:roomId", authenticateToken, roomController.getRoom);
 
 /**
  * PUT /api/rooms/:roomId
