@@ -24,14 +24,14 @@ const registerUser = async (userName, userPassword, emailAddress, contactNo, isA
     );
 
     const userId = userResult.insertId;
-
+    /*
     // Assign a default role (e.g. roleId = 1 = "user")
     // This is why the transaction is justified — user + role must both exist
     await connection.execute(
       `INSERT INTO UserRoles (userId, roleId) VALUES (?, ?)`,
       [userId, 1]
     );
-
+    */
     await connection.commit();
     return userId;
 
@@ -51,7 +51,7 @@ const registerUser = async (userName, userPassword, emailAddress, contactNo, isA
  * @returns {Promise<Object>} user object
  */
 const loginUser = async (userName) => {
-  const db = await connectDB();
+  const db = connectDB;
 
   const [rows] = await db.execute(
     `SELECT userId, userName, userPassword FROM Users WHERE userName = ?`,

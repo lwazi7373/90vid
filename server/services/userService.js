@@ -7,7 +7,7 @@ const { notFound } = require("../errors/httpErrors");
  * @returns {Promise<Object>} Complete user profile
  */
 const getCurrentUser = async (userId) => {
-  const db = await connectDB();
+  const db = connectDB;
 
   // Core user info + roles
   const [userRows] = await db.query(

@@ -51,7 +51,7 @@ const hasAccess = (room, permission, userId, permissionKey) => {
 ////////////////////////////////////////////////////////// Images /////////////////////////////////////////////////////////////////////
 
 const getImages = async (roomId) => {
-  const db = await connectDB();
+  const db = connectDB;
   await getRoomOrThrow(db, roomId);
 
   const [images] = await db.execute(
@@ -72,7 +72,7 @@ const getImages = async (roomId) => {
 };
 
 const getImage = async (roomId, imageId) => {
-  const db = await connectDB();
+  const db = connectDB;
   await getRoomOrThrow(db, roomId);
 
   const [[image]] = await db.execute(
@@ -97,7 +97,7 @@ const getImage = async (roomId, imageId) => {
  * uploads to S3, then saves the returned URL to the DB.
  */
 const postImage = async (roomId, userId, file) => {
-  const db = await connectDB();
+  const db = connectDB;
   const room = await getRoomOrThrow(db, roomId);
   const permission = await getRoomPermission(db, roomId, userId);
 
@@ -122,7 +122,7 @@ const postImage = async (roomId, userId, file) => {
  * having the file gone from S3 but the dead URL still in your DB.
  */
 const removeImage = async (roomId, imageId, userId) => {
-  const db = await connectDB();
+  const db = connectDB;
   const room = await getRoomOrThrow(db, roomId);
 
   const [[image]] = await db.execute(
@@ -143,7 +143,7 @@ const removeImage = async (roomId, imageId, userId) => {
 ////////////////////////////////////////////////////////// Videos /////////////////////////////////////////////////////////////////////
 
 const getVideos = async (roomId) => {
-  const db = await connectDB();
+  const db = connectDB;
   await getRoomOrThrow(db, roomId);
 
   const [videos] = await db.execute(
@@ -168,7 +168,7 @@ const getVideos = async (roomId) => {
 };
 
 const getVideo = async (roomId, videoId) => {
-  const db = await connectDB();
+  const db = connectDB;
   await getRoomOrThrow(db, roomId);
 
   const [[video]] = await db.execute(
@@ -205,7 +205,7 @@ const getVideo = async (roomId, videoId) => {
  * with the metadata (title, fileUrl, etc.) to save to the DB.
  */
 const getVideoUploadUrl = async (roomId, userId, mimeType) => {
-  const db = await connectDB();
+  const db = connectDB;
   const room = await getRoomOrThrow(db, roomId);
   const permission = await getRoomPermission(db, roomId, userId);
 
@@ -218,7 +218,7 @@ const getVideoUploadUrl = async (roomId, userId, mimeType) => {
 };
 
 const postVideo = async (roomId, userId, { title, description, fileUrl, thumbnailUrl, durationSeconds }) => {
-  const db = await connectDB();
+  const db = connectDB;
   const room = await getRoomOrThrow(db, roomId);
 
   if (!title || !fileUrl) throw badRequest("title and fileUrl are required");
@@ -238,7 +238,7 @@ const postVideo = async (roomId, userId, { title, description, fileUrl, thumbnai
 };
 
 const removeVideo = async (roomId, videoId, userId) => {
-  const db = await connectDB();
+  const db = connectDB;
   const room = await getRoomOrThrow(db, roomId);
 
   const [[video]] = await db.execute(

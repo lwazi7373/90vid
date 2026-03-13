@@ -1,8 +1,12 @@
 const connectDB = require("../db/Connect");
 const { badRequest, forbidden, notFound } = require("../errors/httpErrors");
 
+/**
+ * Gets all the rooms available on the platform
+ * @returns rooms
+ */
 const getRooms = async () => {
-  const db = await connectDB();
+  const db = connectDB;
 
   const [rooms] = await db.execute(
     `SELECT 
@@ -20,8 +24,13 @@ const getRooms = async () => {
   return rooms;
 };
 
+/**
+ * Gets a particular room 
+ * @param {Number} roomId 
+ * @returns 
+ */
 const getRoom = async (roomId) => {
-  const db = await connectDB();
+  const db = connectDB;
 
   const [[room]] = await db.execute(
     `SELECT 
@@ -41,8 +50,14 @@ const getRoom = async (roomId) => {
   return room;
 };
 
+/**
+ * Creates a room for a user
+ * @param {Number} userId 
+ * @param {String, String} param1 
+ * @returns 
+ */
 const createRoom = async (userId, { roomName, description }) => {
-  const db = await connectDB();
+  const db = connectDB;
 
   if (!roomName) throw badRequest("roomName is required");
 
@@ -54,8 +69,15 @@ const createRoom = async (userId, { roomName, description }) => {
   return { roomId: result.insertId, roomName, description, createdBy: userId };
 };
 
+/**
+ * Updates the details of the room 
+ * @param {Number} roomId 
+ * @param {Number} userId 
+ * @param {String, String} param2 
+ * @returns 
+ */
 const updateRoom = async (roomId, userId, { roomName, description }) => {
-  const db = await connectDB();
+  const db = connectDB;
 
   // Check room exists
   const [[room]] = await db.execute(
@@ -101,8 +123,13 @@ const updateRoom = async (roomId, userId, { roomName, description }) => {
   return updatedRoom;
 };
 
+/**
+ * Removes a room from the platform
+ * @param {Number} roomId 
+ * @param {Number} userId 
+ */
 const deleteRoom = async (roomId, userId) => {
-  const db = await connectDB();
+  const db = connectDB;
 
   const [[room]] = await db.execute(
     `SELECT roomId, createdBy FROM Rooms WHERE roomId = ?`,
