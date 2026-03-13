@@ -8,7 +8,7 @@ const { notFound } = require("../errors/httpErrors");
  * for the frontend to distinguish between rooms with the same name.
  */
 const searchRooms = async (roomName) => {
-  const db = await connectDB();
+  const db = connectDB;
 
   const [rows] = await db.execute(
     `SELECT 
@@ -40,7 +40,7 @@ const searchRooms = async (roomName) => {
  * users find "john" by typing "jo".
  */
 const searchUsers = async (userName) => {
-  const db = await connectDB();
+  const db = connectDB;
 
   const [rows] = await db.execute(
     `SELECT 

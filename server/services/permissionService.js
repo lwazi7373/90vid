@@ -6,7 +6,7 @@ const { badRequest, forbidden, notFound } = require("../errors/httpErrors");
  * Only the room creator can see this.
  */
 const permittedUsers = async (roomId, userId) => {
-  const db = await connectDB();
+  const db = connectDB;
 
   const [[room]] = await db.execute(
     `SELECT roomId, createdBy FROM Rooms WHERE roomId = ?`,
@@ -40,7 +40,7 @@ const permittedUsers = async (roomId, userId) => {
  * If the user already has a permission row, update it instead of inserting.
  */
 const permitUser = async (roomId, creatorId, { userId, canUpload, canDelete, canEditRoom }) => {
-  const db = await connectDB();
+  const db = connectDB;
 
   if (!userId) throw badRequest("userId is required");
 
@@ -125,7 +125,7 @@ const permitUser = async (roomId, creatorId, { userId, canUpload, canDelete, can
  * Only the room creator can do this.
  */
 const revokeUser = async (roomId, creatorId, targetUserId) => {
-  const db = await connectDB();
+  const db = connectDB;
 
   const [[room]] = await db.execute(
     `SELECT roomId, createdBy FROM Rooms WHERE roomId = ?`,
