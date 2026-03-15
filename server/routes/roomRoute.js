@@ -17,6 +17,18 @@ router.get("/rooms", authenticateToken, roomController.getRooms);
 router.post("/rooms", authenticateToken, roomController.createRoom);
 
 /**
+ * GET /api/rooms
+ * Get all the rooms created by the logged in user (myRooms)
+ */
+router.get("/rooms/mine", authenticateToken, roomController.getMyRooms);
+
+/**
+ * GET /api/rooms
+ * Gets all the rooms tge current user has been given permission to 
+ */
+router.get("/rooms/permitted", authenticateToken, roomController.getPermittedRooms);
+
+/**
  * GET /api/rooms/:roomId
  * Get a specific room 
  */

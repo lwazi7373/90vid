@@ -51,6 +51,59 @@ const getRoom = async (roomId) => {
 };
 
 /**
+ * Gets the current users rooms (created by the user)
+ * @param {Number} userId 
+ * @returns the rooms or an empty array
+ */
+const getMyRooms = async (userId) => {
+  const db = connectDB;
+
+  const [rooms] = await db.execute(
+    `SELECT
+      r.roomId,
+      r.roomName,
+      r.description,
+      r.createdAt
+     FROM Rooms r
+     WHERE r.createdBy = ?
+     ORDER BY r.createdAt DESC`,
+    [userId]
+  );
+
+  return rooms;
+};
+
+/**
+ * Gets the rooms the current user has been given permission to
+ * @param {Number} userId 
+ * @returns the rooms on an empty array
+ */
+const getPermittedRooms = async (userId) => {
+  const db = connectDB;
+
+  const [rooms] = await db.execute(
+    `SELECT
+      r.roomId,
+      r.roomName,
+      r.description,
+      r.createdAt,
+      u.userId   AS creatorId,
+      u.userName AS creatorName,
+      rp.canUpload,
+      rp.canDelete,
+      rp.canEditRoom
+     FROM RoomPermissions rp
+     JOIN Rooms r  ON r.roomId  = rp.roomId
+     JOIN Users u  ON u.userId  = r.createdBy
+     WHERE rp.userId = ?
+     ORDER BY r.createdAt DESC`,
+    [userId]
+  );
+
+  return rooms;
+};
+
+/**
  * Creates a room for a user
  * @param {Number} userId 
  * @param {String, String} param1 
@@ -145,4 +198,4 @@ const deleteRoom = async (roomId, userId) => {
   await db.execute(`DELETE FROM Rooms WHERE roomId = ?`, [roomId]);
 };
 
-module.exports = { getRooms, getRoom, createRoom, updateRoom, deleteRoom };
+module.exports = { getRooms, getRoom, getMyRooms, getPermittedRooms ,createRoom, updateRoom, deleteRoom };

@@ -19,6 +19,26 @@ const getRoom = async (req, res, next) => {
   }
 };
 
+const getMyRooms = async (req, res, next) => {
+  try {
+    const userId = req.user.userId;
+    const rooms = await roomService.getMyRooms(userId);
+    return res.status(200).json({ results: rooms, count: rooms.length });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getPermittedRooms = async (req, res, next) => {
+  try {
+    const userId = req.user.userId;
+    const rooms = await roomService.getPermittedRooms(userId);
+    return res.status(200).json({ results: rooms, count: rooms.length });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const createRoom = async (req, res, next) => {
   try {
     const userId = req.user.userId;
@@ -53,4 +73,4 @@ const deleteRoom = async (req, res, next) => {
   }
 };
 
-module.exports = { getRooms, getRoom, createRoom, updateRoom, deleteRoom };
+module.exports = { getRooms, getRoom, getMyRooms ,getPermittedRooms ,createRoom, updateRoom, deleteRoom };
