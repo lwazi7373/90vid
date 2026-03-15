@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt"); //encrypt passwords
 const jwt = require("jsonwebtoken"); //create tokens
-const { unauthorized } = require("../errors/httpErrors");
+const { unauthorized, notFound } = require("../errors/httpErrors");
 const authService = require("../services/authService");
 
 /**
@@ -56,4 +56,17 @@ const login = async (req, res) => {
   res.status(200).json({msg: "Sucessfully logged In User", authToken});
 };
 
-module.exports = {register, login};
+/**
+ * Gets the current user (for frontend architecture purposes)
+ * @param {*} req
+ * @param {*} res
+ * @returns user's data
+ */
+const getMe = async (req, res) => {
+  const userId = req.user.userId; // From the JWT token (its named user)
+  const userData = await authService.getCurrentUser(userId);
+  if (!userData) throw notFound("User not found");
+  res.status(200).json({ msg: "User found", user: userData });
+};
+
+module.exports = {register, login, getMe};

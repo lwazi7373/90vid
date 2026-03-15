@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const authController = require("../controllers/authController");
+const authenticateToken = require("../middleware/authMiddleware");
 
 /**
  * POST /api/auth/register
@@ -15,6 +16,12 @@ router.post("/auth/register", authController.register);
  * Body: { userName, userPassword }
  */
 router.post("/auth/login", authController.login);
+
+/**
+ * GET /api/auth/me
+ * Get the current user
+ */
+router.get("/auth/me", authenticateToken, authController.getMe);
 
 /**
  * Will probably handle logout on client side, but for now just incase
