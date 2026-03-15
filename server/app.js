@@ -12,14 +12,12 @@ app.use(cors({ origin: true }));
 const connectDB = require('./db/Connect');
 
 const authRoutes = require("./routes/authRoute");
-const userRoutes = require("./routes/userRoute");
 const searchRoutes = require("./routes/searchRoute");
 const mediaRoutes = require("./routes/mediaRoute");
 const permissionRoutes = require("./routes/permissionRoute");
 const roomRoutes = require("./routes/roomRoute");
 
 app.use("/api/", authRoutes);
-app.use("/api/", userRoutes);
 app.use("/api/", searchRoutes);
 app.use("/api/", mediaRoutes);
 app.use("/api/", permissionRoutes);
