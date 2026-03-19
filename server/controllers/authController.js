@@ -53,7 +53,7 @@ const login = async (req, res) => {
   const authToken = jwt.sign(payload, secret, { expiresIn: "1d" });
 
   // Send response
-  res.status(200).json({msg: "Sucessfully logged In User", authToken});
+  res.status(200).json({msg: "Sucessfully logged In User", authToken, user});
 };
 
 /**
