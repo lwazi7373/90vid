@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Vault - Permitted Rooms</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary": "#293043",
+                        "surface-container-high": "#292a2f",
+                        "outline": "#8c909e",
+                        "on-surface-variant": "#c2c6d5",
+                        "inverse-on-surface": "#2f3036",
+                        "secondary-fixed": "#dbe2fb",
+                        "tertiary-fixed-dim": "#c0c6da",
+                        "on-primary-container": "#00285b",
+                        "inverse-primary": "#005bbf",
+                        "secondary-container": "#3f465b",
+                        "on-background": "#e3e1e9",
+                        "primary": "#acc7ff",
+                        "surface-container": "#1e1f25",
+                        "surface-tint": "#acc7ff",
+                        "on-surface": "#e3e1e9",
+                        "primary-container": "#508ff8",
+                        "outline-variant": "#424753",
+                        "surface-container-low": "#1a1b21",
+                        "surface-dim": "#121318",
+                        "surface": "#121318",
+                        "surface-container-highest": "#34343a",
+                        "secondary": "#bfc6de",
+                        "surface-bright": "#38393f",
+                        "surface-container-lowest": "#0d0e13",
+                        "primary-fixed-dim": "#acc7ff",
+                        "on-primary": "#002f68",
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-sidebar {
+            background: rgba(13, 14, 19, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .obsidian-card {
+            background: #1e1f25;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .obsidian-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.5), 0 0 15px -5px #4F8EF7;
+        }
+        .midnight-oil-border {
+            border: 1px solid rgba(66, 71, 83, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-body antialiased">
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden lg:flex flex-col h-screen py-6 fixed left-0 top-0 w-[220px] z-40 bg-[#0D0E13]/80 backdrop-blur-xl border-r border-[#424753]/15 shadow-[24px_0_48px_rgba(0,0,0,0.5)] font-['Manrope'] antialiased tracking-tight">
+<!-- Header (Updated to SCREEN_15 Style) -->
+<div class="px-6 mb-10">
+<h1 class="text-xl font-bold tracking-tighter text-[#e3e1e9]">The Vault</h1>
+<p class="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-medium mt-1">Digital Curator</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 text-[#9497a1] transition-colors hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300 ease-in-out hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="text-sm font-medium">Discover</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#9497a1] transition-colors hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300 ease-in-out hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined" data-icon="folder_shared">folder_shared</span>
+<span class="text-sm font-medium">My Rooms</span>
+</a>
+<!-- Active State: Permitted Rooms -->
+<a class="flex items-center gap-3 px-6 py-3 text-[#4F8EF7] bg-[#4F8EF7]/10 border-l-2 border-[#4F8EF7] transition-all duration-300 ease-in-out hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined" data-icon="lock_open">lock_open</span>
+<span class="text-sm font-bold">Permitted Rooms</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#9497a1] transition-colors hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300 ease-in-out hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-sm font-medium">User Profile</span>
+</a>
+</nav>
+<!-- Footer Profile & Logout (Updated to match SCREEN_15/SCREEN_2 Style) -->
+<div class="mt-auto px-4 space-y-4">
+<div class="flex items-center gap-3 p-2 bg-surface-container rounded-xl">
+<img alt="Alex Vance" class="w-8 h-8 rounded-full border border-outline-variant/30" data-alt="Close up portrait of a professional man with clean-shaven face and modern hairstyle, soft studio lighting, high quality photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_I64sTbfc6MiRDd_0dd3FBNypJfPn5x110Po8s3WrG6VkEcbY5yXjRjfksA_DWIwZ5B8rKvD-iR6xnC2QsON_OoUmbrKBUMmpcU38Ez82VoNStsMypnUapoznB2I4fcyI5b0sc500htbUL-K4ore9z70rlqf0bcoFV-ZVPs0Y2J89LU-nwldjdfGNPrgJ9lMsNEu8EJ8y1EG_BRNOVQKvK34YOe_ZTv3xycTAao7rDNLCFG0-DOxHry4wxOoV7D-0bRyQIDYskww"/>
+<div class="overflow-hidden">
+<p class="text-xs font-bold truncate">Alex Vance</p>
+</div>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 text-[#9497a1] transition-colors hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300 ease-in-out hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm">Logout</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-30 h-16 flex justify-between items-center px-6 lg:pl-[244px] bg-[#0D0E13]/80 backdrop-blur-md no-border bg-[#1E1F25] flat no-shadows">
+<div class="flex items-center gap-4 lg:hidden">
+<span class="material-symbols-outlined text-on-surface" data-icon="menu">menu</span>
+<span class="text-xl font-black tracking-[-0.04em] text-[#e3e1e9]">Vault</span>
+</div>
+<div class="hidden md:flex flex-1 max-w-md mx-8 focus-within:scale-[1.02] transition-transform duration-200">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary/30 placeholder:text-on-surface-variant/50" placeholder="Search permitted archives..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-5">
+<button class="text-[#9497a1] hover:text-[#4F8EF7] transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full border-2 border-[#0D0E13]"></span>
+</button>
+<button class="text-[#9497a1] hover:text-[#4F8EF7] transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-24 pb-20 lg:pb-10 lg:pl-[244px] px-6 min-h-screen">
+<!-- Header Section -->
+<section class="mb-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-2xl">
+<span class="text-primary font-label text-xs font-bold tracking-[0.2em] uppercase mb-3 block">Access Repository</span>
+<h2 class="text-4xl lg:text-5xl font-headline font-extrabold text-[#F0F0F5] tracking-tight leading-tight">Permitted Rooms</h2>
+<p class="mt-4 text-[#8A8FA8] font-body text-base leading-relaxed">
+                        Securely browsing archives where you hold active administrative or collaborative credentials. Each vault is encrypted and monitored.
+                    </p>
+</div>
+
+</div>
+</section>
+<!-- Room Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+<!-- Room Card 1 -->
+<div class="obsidian-card rounded-xl overflow-hidden midnight-oil-border flex flex-col h-full">
+<div class="relative aspect-video">
+<img class="w-full h-full object-cover" data-alt="ultra-modern minimalist library with high ceilings, dark obsidian shelves, and subtle blue neon accent lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBodZ12MszRwrdWFsL1zxyO_t4PcOcPu1FdpAaXyrsYtinMm7N-KJomzA5Jcd9aqh8yHo_Tyrf8FTWelPzyLfUCc4GMDPcOPP1sRMRidTAz-x5Um9pD2EIKtF56LSfIhSVMmnFZ4mhyLntubCVL-r08vD-KsHHCPtXI0BCl0CC4SSfWSWX8rh6Ce4kzGRZRrRcZrU1W10E_nJuGlG-EWFqQJtNf4A8y2VP2kzYb4n5_9hfpwJoCPr-NVrjgOVk74Iy7uWTYnINLqOk"/>
+
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-3">
+<h3 class="text-xl font-headline font-bold text-[#F0F0F5]">Global Assets A-1</h3>
+<span class="material-symbols-outlined text-[#8A8FA8] text-lg cursor-pointer" data-icon="more_vert">more_vert</span>
+</div>
+<p class="text-sm text-[#8A8FA8] mb-6 line-clamp-2">Centralized branding assets, high-resolution master files, and global marketing guidelines for the 2024 season.</p>
+<!-- Permission Row -->
+<div class="mt-auto pt-4 border-t border-[#424753]/15 flex flex-wrap gap-2">
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#2ECC71]/10 text-[#2ECC71] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="upload">upload</span> Upload
+                        </span>
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#4F8EF7]/10 text-[#4F8EF7] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="edit">edit</span> Edit
+                        </span>
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#E74C3C]/10 text-[#E74C3C] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="delete">delete</span> Delete
+                        </span>
+</div>
+</div>
+</div>
+<!-- Room Card 2 -->
+<div class="obsidian-card rounded-xl overflow-hidden midnight-oil-border flex flex-col h-full">
+<div class="relative aspect-video">
+<img class="w-full h-full object-cover" data-alt="futuristic server room with glowing blue cables and dark metallic surfaces in a cinematic wide shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZRQao5KvleXOoGFsOwzcxPxZJnurjZaRyKscOEVtOe-CT2Lq8TnKHMfxsUT3m5WWTJm_jJSy1xhM7CAiyduHqPXKxzFGz91HZvPLj8r-gNQOKRY1yqiRoKLicTv4J3vmVopOLfVUm-Dn8bYqP19UUY0QkD08jNEqwvI3lwr0IoKHM9yrLlXVSDEsZ9dQ92QON08nxWHMHGW9DrnmYY2dJcD-UFm8MwKLoCEtWkNW9YhJKx-SNTMmT2MaOzS6bsdzYVdfCSAHrCf4"/>
+
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-3">
+<h3 class="text-xl font-headline font-bold text-[#F0F0F5]">Project: Obsidian</h3>
+<span class="material-symbols-outlined text-[#8A8FA8] text-lg cursor-pointer" data-icon="more_vert">more_vert</span>
+</div>
+<p class="text-sm text-[#8A8FA8] mb-6 line-clamp-2">Encrypted development logs, prototype wireframes, and secure API documentation for the internal system overhaul.</p>
+<!-- Permission Row -->
+<div class="mt-auto pt-4 border-t border-[#424753]/15 flex flex-wrap gap-2">
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#2ECC71]/10 text-[#2ECC71] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="upload">upload</span> Upload
+                        </span>
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#4F8EF7]/10 text-[#4F8EF7] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="edit">edit</span> Edit
+                        </span>
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#E74C3C]/10 text-[#E74C3C] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="delete">delete</span> Delete
+                        </span>
+</div>
+</div>
+</div>
+<!-- Room Card 3 -->
+<div class="obsidian-card rounded-xl overflow-hidden midnight-oil-border flex flex-col h-full">
+<div class="relative aspect-video">
+<img class="w-full h-full object-cover" data-alt="abstract digital landscape with floating glass polygons and deep blue atmospheric depth" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMIOMPCAGpxrlwTFhc__g6tCt7TXemD4fx5GCGrqazF0gTMwEU25tbgS4gQ8vReeYgMfUyJv5uEhc2FoQAF0EZP61OqNcIzvjSpHU074-ItkVOuvIyBQX3oM-sj5InlfZASW1SFq0A6gfSiJ-srqAJRhXj_llOQ9g7V6ln9AWCipzL04OiK91lUVeyWADJMAQxwcrY4rHaVcIePd5kgj40B2zvhbOo8BGLLu0yp-5W5DdLbkxzssr5f0xtTsc3LSZzXM4Y_0KkyzY"/>
+
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-3">
+<h3 class="text-xl font-headline font-bold text-[#F0F0F5]">Legal Archives</h3>
+<span class="material-symbols-outlined text-[#8A8FA8] text-lg cursor-pointer" data-icon="more_vert">more_vert</span>
+</div>
+<p class="text-sm text-[#8A8FA8] mb-6 line-clamp-2">Confidential contracts, intellectual property filings, and non-disclosure agreements for executive review.</p>
+<!-- Permission Row -->
+<div class="mt-auto pt-4 border-t border-[#424753]/15 flex flex-wrap gap-2">
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#2ECC71]/10 text-[#2ECC71] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="upload">upload</span> Upload
+                        </span>
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#4F8EF7]/10 text-[#4F8EF7] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="edit">edit</span> Edit
+                        </span>
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#E74C3C]/10 text-[#E74C3C] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="delete">delete</span> Delete
+                        </span>
+</div>
+</div>
+</div>
+<!-- Room Card 4 -->
+<div class="obsidian-card rounded-xl overflow-hidden midnight-oil-border flex flex-col h-full">
+<div class="relative aspect-video">
+<img class="w-full h-full object-cover" data-alt="top-down view of a luxury marble desk with a sleek laptop and architectural blueprints under dim warm light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCayUTjkquXV4iXZLwJXkYdhNvdbCYi4D-lkFiRQjb2XyjtSAEyCgSMUklAJh80xNsIH3Twfaw7ZdJYm3hLWFKYo7BOkCASGqZDaTAEL86MHLDhx0_PBzq_-dvpkQyTjNqGMxmexqJLIqQG1S6NpnJa6occB9KSc6DXmKZAW-MBBl1Cf8ZzF-wW1_vLe8GQZ1ZbgfxGq3ANZc5TpkOH1PlvTsVzxU4LFdO3MrkuX8P7hpP9cg0LFmgvWKaaMlz9jQYXXcuz9gfDsO0"/>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-3">
+<h3 class="text-xl font-headline font-bold text-[#F0F0F5]">Design Systems</h3>
+<span class="material-symbols-outlined text-[#8A8FA8] text-lg cursor-pointer" data-icon="more_vert">more_vert</span>
+</div>
+<p class="text-sm text-[#8A8FA8] mb-6 line-clamp-2">Shared UI components, typography scales, and motion design principles for cross-platform implementation.</p>
+<!-- Permission Row -->
+<div class="mt-auto pt-4 border-t border-[#424753]/15 flex flex-wrap gap-2">
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#2ECC71]/10 text-[#2ECC71] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="upload">upload</span> Upload
+                        </span>
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#4F8EF7]/10 text-[#4F8EF7] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="edit">edit</span> Edit
+                        </span>
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#E74C3C]/10 text-[#E74C3C] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="delete">delete</span> Delete
+                        </span>
+</div>
+</div>
+</div>
+<!-- Room Card 5 -->
+<div class="obsidian-card rounded-xl overflow-hidden midnight-oil-border flex flex-col h-full">
+<div class="relative aspect-video">
+<img class="w-full h-full object-cover" data-alt="cinematic close up of a high-tech crystal storage device glowing from within with a soft blue light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv4Cv9rDD2tliKoerAm15AKuANUByis7cylKktgDbr8RG4QQiEq0S6Q_UuIBXXhz_MPuC-Sk0ghXGilR3f18OsaBfCdtTlDPPdMZIlBL-JHT7IpzEl013Dpwgp5F30LnwiXB20OCeI0wU4aQGOiSM9h3zK2MT_CnaWffuHY7ctMT2SkfG10oknVRqcaoAWsVglSttANRZaYfnN-mRJDI32FgUrlACTfhYIWfwnY0rSJ9knRXfAIjpo0WW3EUhxrxS49BFA-ygZ_gU"/>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-3">
+<h3 class="text-xl font-headline font-bold text-[#F0F0F5]">Legacy Vault</h3>
+<span class="material-symbols-outlined text-[#8A8FA8] text-lg cursor-pointer" data-icon="more_vert">more_vert</span>
+</div>
+<p class="text-sm text-[#8A8FA8] mb-6 line-clamp-2">Historical data sets and old project binaries preserved for long-term reference and heritage audits.</p>
+<!-- Permission Row -->
+<div class="mt-auto pt-4 border-t border-[#424753]/15 flex flex-wrap gap-2">
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#2ECC71]/10 text-[#2ECC71] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="upload">upload</span> Upload
+                        </span>
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#4F8EF7]/10 text-[#4F8EF7] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="edit">edit</span> Edit
+                        </span>
+<span class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#E74C3C]/10 text-[#E74C3C] text-[10px] font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" data-icon="delete">delete</span> Delete
+                        </span>
+</div>
+</div>
+</div>
+<!-- Add New Permission (Bento Style Placeholder) -->
+
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-safe h-16 bg-[#1E1F25]/90 backdrop-blur-lg border-t border-[#424753]/15 shadow-[0_-8px_24px_rgba(0,0,0,0.4)] z-50 font-['Inter'] text-[10px] uppercase tracking-widest">
+<a class="flex flex-col items-center justify-center text-[#9497a1] py-2 tap-highlight-transparent active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="explore">explore</span>
+<span>Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9497a1] py-2 tap-highlight-transparent active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="folder_shared">folder_shared</span>
+<span>My Rooms</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4F8EF7] py-2 scale-110 tap-highlight-transparent active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="lock_open" style="font-variation-settings: 'FILL' 1;">lock_open</span>
+<span>Permitted</span>
+</a>
+</nav>
+</body></html>

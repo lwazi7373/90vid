@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Vault - My Rooms</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary": "#293043",
+              "surface-container-high": "#292a2f",
+              "outline": "#8c909e",
+              "on-surface-variant": "#c2c6d5",
+              "inverse-on-surface": "#2f3036",
+              "secondary-fixed": "#dbe2fb",
+              "tertiary-fixed-dim": "#c0c6da",
+              "on-primary-container": "#00285b",
+              "inverse-primary": "#005bbf",
+              "secondary-fixed-dim": "#bfc6de",
+              "on-secondary-fixed-variant": "#3f465b",
+              "background": "#121318",
+              "on-primary-fixed": "#001a40",
+              "surface-variant": "#34343a",
+              "surface-container": "#1e1f25",
+              "on-tertiary-fixed": "#151b2a",
+              "on-secondary-fixed": "#141b2d",
+              "surface-tint": "#acc7ff",
+              "secondary-container": "#3f465b",
+              "on-background": "#e3e1e9",
+              "primary": "#acc7ff",
+              "on-tertiary-fixed-variant": "#404657",
+              "on-surface": "#e3e1e9",
+              "primary-container": "#508ff8",
+              "tertiary-fixed": "#dde2f7",
+              "on-tertiary-container": "#232939",
+              "outline-variant": "#424753",
+              "on-tertiary": "#2a3040",
+              "on-primary-fixed-variant": "#004492",
+              "primary-fixed": "#d7e2ff",
+              "surface-container-low": "#1a1b21",
+              "surface-dim": "#121318",
+              "inverse-surface": "#e3e1e9",
+              "tertiary": "#c0c6da",
+              "tertiary-container": "#8a90a3",
+              "on-secondary-container": "#aeb4cd",
+              "surface": "#121318",
+              "surface-container-highest": "#34343a",
+              "error": "#ffb4ab",
+              "on-error": "#690005",
+              "secondary": "#bfc6de",
+              "surface-bright": "#38393f",
+              "surface-container-lowest": "#0d0e13",
+              "error-container": "#93000a",
+              "primary-fixed-dim": "#acc7ff",
+              "on-primary": "#002f68",
+              "on-error-container": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .gradient-btn {
+            background: linear-gradient(135deg, #acc7ff 0%, #508ff8 100%);
+        }
+        body {
+            background-color: #0d0e13;
+            color: #e3e1e9;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+<!-- Sidebar (Shared Component) -->
+<aside class="hidden lg:flex flex-col h-screen py-6 fixed left-0 top-0 h-full w-[220px] z-40 bg-[#0D0E13]/80 backdrop-blur-xl border-r border-[#424753]/15 shadow-[24px_0_48px_rgba(0,0,0,0.5)] font-['Manrope'] antialiased tracking-tight">
+<div class="px-6 mb-10">
+<h1 class="text-xl font-bold tracking-tighter text-[#e3e1e9]">The Vault</h1>
+<p class="text-xs text-on-surface-variant/60 tracking-widest uppercase mt-1">Digital Curator</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#9497a1] transition-colors hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300 ease-in-out hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-sm font-medium">Discover</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#4F8EF7] bg-[#4F8EF7]/10 border-l-2 border-[#4F8EF7] transition-all duration-300 ease-in-out hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder_shared</span>
+<span class="text-sm font-medium">My Rooms</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#9497a1] transition-colors hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300 ease-in-out hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined">lock_open</span>
+<span class="text-sm font-medium">Permitted Rooms</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#9497a1] transition-colors hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300 ease-in-out hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-sm font-medium">User Profile</span>
+</a>
+</nav>
+</aside>
+<!-- Top Navigation (Shared Component) -->
+<header class="fixed top-0 w-full z-50 h-16 flex justify-between items-center px-6 lg:pl-[244px] bg-[#0D0E13]/80 backdrop-blur-md no-border bg-[#1E1F25] flat no-shadows">
+<div class="flex items-center gap-4 lg:hidden">
+<span class="material-symbols-outlined text-on-surface">menu</span>
+<span class="text-2xl font-black tracking-[-0.04em] text-[#e3e1e9]">Vault</span>
+</div>
+<div class="hidden md:flex flex-1 max-w-md mx-4">
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-md py-2 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary/30 focus:scale-[1.02] transition-all duration-200" placeholder="Search archives..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#9497a1] hover:text-[#4F8EF7] transition-colors">notifications</button>
+<button class="material-symbols-outlined text-[#9497a1] hover:text-[#4F8EF7] transition-colors">settings</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="Portrait of a modern digital professional avatar with clean lines and minimalist aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2DZ-jX_P5_W2R3do-Bl5sg-7M9nqkM7cjadvAZc-KpF265S5aNm25UTlmXuxE9Pwjl1BNrpr4wCVoDwQkCc9L3sErcEoWnoMIPv_ZZvNXrYa4Jwl0wOMaR536oYL5XFo2o_wiZo30BLCOZsV9J3uQadSLeyVka4Muq0GhmC9knNRynR1q5uuhP-3Ywz0yx0C3TxqD6wOAAwB7KkKw4Hclz8nm5dalwZFmokGKG9JXp37C3XP-PdCAcAZo_FPoTL2dZgGS90Atmys"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas (Background of Modal) -->
+<main class="pt-24 pb-20 px-6 lg:pl-[244px] min-h-screen blur-sm pointer-events-none">
+<div class="max-w-7xl mx-auto">
+<header class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline text-4xl font-extrabold tracking-tight text-on-surface">My Rooms</h2>
+<p class="text-on-surface-variant label-md mt-2 tracking-widest uppercase opacity-70">Personal Collections</p>
+</div>
+<button class="gradient-btn px-6 py-3 rounded-xl font-bold text-on-primary flex items-center gap-2 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">add</span>
+                    Create Room
+                </button>
+</header>
+<!-- Bento Grid of Rooms -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Room Card 1 -->
+<div class="md:col-span-2 group relative overflow-hidden rounded-xl bg-surface-container-high aspect-[16/9]">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60" data-alt="Abstract cinematic 3D render of glowing blue liquid geometric shapes in a dark obsidian chamber" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCw_LXDYlz2V7JlczYAaiLMSEenmsP9h7yde44ft7An-_vzl-LXQfSWxGX2JvFZIwv6yXdjMzE2xIcopMYdX-k4Bs5YPLsrCW6qHuNa3h3XhjwdD3DkNmfqw20ZudFmSB10rZmWPdUt3Njs0Uomb0Of3bl2UpZgqIrCuN9NPJs6Nrukngb5U-edQAHjZAxqTtAPkUi9Fhm3w_RFtP4YamWpOVOQ-sPbvGPHgx5xFsJ2WlH38EoM1cGwmcZxgmrflnKJOXdLwnqChmg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8">
+<span class="inline-block px-3 py-1 bg-secondary-container text-primary text-[10px] font-bold uppercase tracking-widest rounded-sm mb-3">Priority</span>
+<h3 class="text-2xl font-headline font-bold text-on-surface">Research Protocol Alpha</h3>
+<p class="text-on-surface-variant text-sm mt-2 max-w-md">Encrypted storage for high-fidelity architectural visualizations and source assets.</p>
+</div>
+</div>
+<!-- Room Card 2 -->
+<div class="group relative overflow-hidden rounded-xl bg-surface-container-high">
+<img class="absolute inset-0 w-full h-full object-cover opacity-40" data-alt="Futuristic digital network interface with glowing blue lines and data points over a black background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZmxplMwG8qmPDWPBPukwQ8yc-IyJTwKCyr4kOOL5giADdvRjkq7WgCwoFuoWZtq7ww3B4Oo2TEbyqAT1YZRjgf7NYMWCjfwldh1glqWLrQJfkJLrD-JCJ_G_cYEOxvGicEW4swyTzclBClV8H1hLQmSbooHpDScnrA6Ds18OzS_aHPietj_hOs0hTnRK-JrNzq4Fh9VW2tqP6ZgUZmqKCQvIqprZBeqG9nGrNV9gdjwSqaguqP5QuzguPnW6B543t05JjW-Z1qGo"/>
+<div class="absolute inset-0 bg-surface-container-high/60 backdrop-blur-[2px]"></div>
+<div class="relative p-8 h-full flex flex-col justify-between">
+<div>
+<h3 class="text-xl font-headline font-bold text-on-surface">Neural Assets</h3>
+<p class="text-on-surface-variant text-sm mt-2">AI training data and weight outputs.</p>
+</div>
+<div class="flex items-center gap-4 mt-8">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-high bg-surface-container-lowest overflow-hidden">
+<img alt="Colleague" class="w-full h-full object-cover" data-alt="Professional headshot of a team member for social proof" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi68IXlKF9VgnRG5TnDsODJMz9e-5y5sjy_H26294WGC52DiSlKIBFpCS6WosFjEqNmqmimXXOyQHUKhdOiQ5ixJNHURJn4slgE8HpFFipSUNiNmhU7csjMB9WnFxLoG01HYGobt578CuqyPj0La0S01hl4txVXtLPdPs5NNDUDYJq0feG6cTt3hzHGCqqMHfhwQoVaeZ4kT7E_2KPy5DeBGwfKqzPm5oC8omwAo8-UMgbEjo8Lrm7FM8wRTvCUuuoCXQDV9REens"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-high bg-surface-container-lowest flex items-center justify-center">
+<span class="text-[10px] font-bold">+3</span>
+</div>
+</div>
+<span class="text-xs text-on-surface-variant">42 Files</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Create Room Modal Overlay -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+<!-- Backdrop -->
+<div class="absolute inset-0 bg-[#0D0E13]/90 backdrop-blur-xl"></div>
+<!-- Modal Container -->
+<div class="relative w-full max-w-lg bg-[#242833] rounded-2xl shadow-[0_24px_48px_rgba(0,0,0,0.6)] overflow-hidden border border-[#424753]/20">
+<!-- Modal Header -->
+<div class="px-8 pt-8 pb-4">
+<h2 class="font-headline text-2xl font-extrabold text-[#e3e1e9] tracking-tight">Create New Room</h2>
+<p class="text-on-surface-variant/70 text-sm mt-1 font-body">Define the parameters for your next digital collection.</p>
+</div>
+<!-- Modal Content -->
+<form class="px-8 py-4 space-y-6">
+<!-- Field: Room Name -->
+<div class="space-y-2">
+<label class="block text-[10px] font-bold uppercase tracking-widest text-[#4F8EF7]" for="room-name">Room Name</label>
+<input class="w-full bg-[#1E1F25] border-none rounded-xl py-4 px-5 text-[#e3e1e9] placeholder-[#9497a1]/40 focus:ring-2 focus:ring-[#4F8EF7]/50 focus:scale-[1.01] transition-all duration-200" id="room-name" placeholder="e.g. Project Obsidian" type="text"/>
+</div>
+<!-- Field: Description -->
+<div class="space-y-2">
+<label class="block text-[10px] font-bold uppercase tracking-widest text-[#4F8EF7]" for="description">Description</label>
+<textarea class="w-full bg-[#1E1F25] border-none rounded-xl py-4 px-5 text-[#e3e1e9] placeholder-[#9497a1]/40 focus:ring-2 focus:ring-[#4F8EF7]/50 focus:scale-[1.01] transition-all duration-200 resize-none" id="description" placeholder="Briefly describe the contents of this vault..." rows="4"></textarea>
+</div>
+<!-- Accessibility Tip -->
+<div class="flex items-start gap-3 p-4 bg-[#4F8EF7]/5 rounded-xl border border-[#4F8EF7]/10">
+<span class="material-symbols-outlined text-[#4F8EF7] text-lg">info</span>
+<p class="text-xs text-[#9497a1] leading-relaxed">Rooms are private by default. You can configure permission protocols once the vault is initialized.</p>
+</div>
+</form>
+<!-- Modal Actions -->
+<div class="px-8 pb-8 pt-4 flex items-center justify-end gap-4">
+<button class="px-6 py-3 text-sm font-semibold text-[#9497a1] hover:text-[#e3e1e9] hover:bg-[#1E1F25] rounded-xl transition-colors" type="button">
+                    Cancel
+                </button>
+<button class="gradient-btn px-8 py-3 text-sm font-bold text-on-primary rounded-xl shadow-[0_8px_20px_rgba(79,142,247,0.3)] hover:scale-[1.03] active:scale-95 transition-all" type="submit">
+                    Create Room
+                </button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation (Shared Component - Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-safe h-16 bg-[#1E1F25]/90 backdrop-blur-lg border-t border-[#424753]/15 shadow-[0_-8px_24px_rgba(0,0,0,0.4)] z-50">
+<a class="flex flex-col items-center justify-center text-[#9497a1] py-2 tap-highlight-transparent active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4F8EF7] py-2 scale-110 tap-highlight-transparent active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder_shared</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">My Rooms</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9497a1] py-2 tap-highlight-transparent active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">lock_open</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">Permitted</span>
+</a>
+</nav>
+</body></html>
