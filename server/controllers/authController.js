@@ -1,6 +1,5 @@
-const bcrypt = require("bcrypt"); //encrypt passwords
-const jwt = require("jsonwebtoken"); //create tokens
-const { unauthorized, notFound } = require("../errors/httpErrors");
+const jwt = require("jsonwebtoken"); // create tokens
+const { badRequest, notFound } = require("../errors/httpErrors");
 const authService = require("../services/authService");
 
 /**
@@ -39,15 +38,11 @@ const register = async (req, res) => {
  */
 const login = async (req, res) => {
   const { userName, userPassword } = req.body;
-  const user = await authService.loginUser(userName); 
+  const user = await authService.loginUser(userName, userPassword); 
 
-  // After getting the user object, validate if the password is correct
-  const isPasswordValid = await bcrypt.compare(userPassword, user.userPassword);
+  if (!userName || !userPassword) throw badRequest("Missing credentials");
 
-  //No seperation for security purposes, to avoid giving out too much information.
-  if (!user || !isPasswordValid) throw unauthorized("Invalid userName or userPassword");
-
-  // If valid, then create token
+  // Create token
   const payload = { userId: user.userId, userName: user.userName};
   const secret = process.env.JWT_SECRET;
   const authToken = jwt.sign(payload, secret, { expiresIn: "1d" });

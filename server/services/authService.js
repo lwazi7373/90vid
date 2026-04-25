@@ -1,6 +1,12 @@
-//Database connection
-const connectDB = require("../db/Connect");
-const { notFound } = require("../errors/httpErrors");
+const connectDB = require("../db/Connect"); // Database connection
+const bcrypt = require("bcrypt"); // encrypt passwords
+const {forbidden, notFound } = require("../errors/httpErrors");
+const {getCache, deleteCache, increment, setExpiry} = require("../cache/cacheService");
+
+const keys = require("../cache/cacheKeys");
+
+const MAX_ATTEMPTS = 5;
+const WINDOW_SECONDS = 900; // 15 minutes
 
 /**
  * Service to register a user to the database
@@ -45,22 +51,90 @@ const registerUser = async (userName, userPassword, emailAddress, contactNo, isA
   }
 };
 
+/**
+ * Helper for failed attempts
+ * @param {*} attemptKey 
+ */
+const handleFailedAttempt = async (attemptKey) => {
+  try {
+    const attempts = await increment(attemptKey);
+
+    // Set expiry only on first failure
+    if (attempts === 1) {
+      await setExpiry(attemptKey, WINDOW_SECONDS);
+    }
+
+    console.log(`Failed login attempt (${attempts})`);
+  } catch (err) {
+    console.error("Cache error (failed attempt):", err);
+  }
+};
 
 /**
  * Service to login user 
+ * Authenticates a user with rate limiting
  * @param {String} userName
+ * @param {String} userPassword
  * @returns {Promise<Object>} user object
  */
-const loginUser = async (userName) => {
+const loginUser = async (userName, userPassword) => {
   const db = connectDB;
 
+  const attemptKey = keys.login.attempts(userName);
+
+  // 1. Check current failed attempts
+  let attempts = 0;
+
+  try {
+    const cachedAttempts = await getCache(attemptKey);
+    attempts = cachedAttempts ? Number(cachedAttempts) : 0;
+  } catch (err) {
+    console.error("Cache error (login attempts):", err);
+  }
+
+  // 2. Block if too many attempts
+  if (attempts >= MAX_ATTEMPTS) {
+    throw forbidden("Too many login attempts. Try again later.");
+  }
+
   const [rows] = await db.execute(
-    `SELECT userId, userName, userPassword FROM Users WHERE userName = ?`,
+    `SELECT userId, userName, userPassword, isActive FROM Users WHERE userName = ?`,
     [userName]
   );
 
-  // Return the single user or null — let the controller handle the 401
-  return rows[0] ?? null;
+  const user = rows[0];
+
+  if (!user) {
+    // Still count attempt (important for security)
+    await handleFailedAttempt(attemptKey);
+    throw notFound("Invalid credentials");
+  }
+
+  if (!user.isActive) {
+    throw forbidden("Account is inactive");
+  }
+
+  // 4. Compare password
+  const isMatch = await bcrypt.compare(userPassword, user.userPassword);
+
+  if (!isMatch) {
+    await handleFailedAttempt(attemptKey);
+    throw notFound("Invalid credentials");
+  }
+
+  // 5. SUCCESS → reset attempts
+  try {
+    await deleteCache(attemptKey);
+  } catch (err) {
+    console.error("Cache delete error (login success):", err);
+  }
+
+  // 6. Return user
+  return {
+    userId: user.userId,
+    userName: user.userName,
+  };
+
 };
 
 /**
