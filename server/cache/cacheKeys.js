@@ -1,4 +1,8 @@
 const keys = {
+  login: {
+    attempts: (userName) => `login:attempts:${userName}`,
+  },
+
   room: (roomId) => `room:${roomId}`,
 
   rooms: {
