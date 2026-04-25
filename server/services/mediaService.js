@@ -2,6 +2,8 @@ const connectDB = require("../db/Connect");
 const { uploadToS3, deleteFromS3, generatePresignedUrl } = require("../utils/s3Helpers");
 const {badRequest, forbidden, notFound} = require("../errors/httpErrors");
 
+const { getCache, setCache, deleteCache } = require("../cache/cacheService");
+const keys = require("../cache/cacheKeys");
 ////////////////////////////////////////////////////////// Utility methods /////////////////////////////////////////////////////////////////////
 /**
  * Get the room or throw not found error
@@ -52,7 +54,23 @@ const hasAccess = (room, permission, userId, permissionKey) => {
 
 const getImages = async (roomId) => {
   const db = connectDB;
+
+  // Get the Cache key for all the images in the room 
+  const cacheKey = keys.media.images(roomId);
   await getRoomOrThrow(db, roomId);
+
+  // Try to get from cache first
+  try {
+    const cachedImages = await getCache(cacheKey);
+    if (cachedImages) {
+      console.log("Cache HIT: getImages");
+      return cachedImages;
+    }
+  } catch (err) {
+    console.error("Cache error (getImages):", err);
+  }
+
+  console.log("Cache MISS: getImages");
 
   const [images] = await db.execute(
     `SELECT 
@@ -67,6 +85,13 @@ const getImages = async (roomId) => {
      ORDER BY i.createdAt DESC`,
     [roomId]
   );
+
+  // Store in cache
+  try {
+    await setCache(cacheKey, images, 120); // shorter TTL (2 min)
+  } catch (err) {
+    console.error("Cache set error (getImages):", err);
+  }
 
   return images;
 };
@@ -113,6 +138,13 @@ const postImage = async (roomId, userId, file) => {
     [fileUrl, userId, roomId]
   );
 
+  // Invalidate on post action
+  try {
+    await deleteCache(keys.media.images(roomId));
+  } catch (err) {
+    console.error("Cache delete error (postImage):", err);
+  }
+
   return { imageId: result.insertId, fileUrl, roomId, uploadedBy: userId };
 };
 
@@ -138,13 +170,37 @@ const removeImage = async (roomId, imageId, userId) => {
 
   await db.execute(`DELETE FROM Images WHERE imageId = ?`, [imageId]);
   await deleteFromS3(image.fileUrl);
+
+  // Invalidate on remove action
+  try {
+    await deleteCache(keys.media.images(roomId));
+  } catch (err) {
+    console.error("Cache delete error (removeImage):", err);
+  }
+
 };
 
 ////////////////////////////////////////////////////////// Videos /////////////////////////////////////////////////////////////////////
 
 const getVideos = async (roomId) => {
   const db = connectDB;
+  // Get the Cache key for all the videos in the room 
+  const cacheKey = keys.media.videos(roomId);
+
   await getRoomOrThrow(db, roomId);
+
+  // Try to get from cache first
+  try {
+    const cachedVideos = await getCache(cacheKey);
+    if (cachedVideos) {
+      console.log("Cache HIT: getVideos");
+      return cachedVideos;
+    }
+  } catch (err) {
+    console.error("Cache error (getVideos):", err);
+  }
+
+  console.log("Cache MISS: getVideos");
 
   const [videos] = await db.execute(
     `SELECT 
@@ -163,6 +219,12 @@ const getVideos = async (roomId) => {
      ORDER BY v.createdAt DESC`,
     [roomId]
   );
+
+  try {
+    await setCache(cacheKey, videos, 120);
+  } catch (err) {
+    console.error("Cache set error (getVideos):", err);
+  }
 
   return videos;
 };
@@ -234,6 +296,13 @@ const postVideo = async (roomId, userId, { title, description, fileUrl, thumbnai
     [title, description ?? null, fileUrl, thumbnailUrl ?? null, userId, roomId, durationSeconds ?? null]
   );
 
+  // Invalidate on post action
+  try {
+    await deleteCache(keys.media.videos(roomId));
+  } catch (err) {
+    console.error("Cache delete error (postVideo):", err);
+  }
+
   return { videoId: result.insertId, title, fileUrl, roomId, uploadedBy: userId };
 };
 
@@ -254,6 +323,13 @@ const removeVideo = async (roomId, videoId, userId) => {
 
   await db.execute(`DELETE FROM Videos WHERE videoId = ?`, [videoId]);
   await deleteFromS3(video.fileUrl);
+
+  // Invalidate on remove action
+  try {
+    await deleteCache(keys.media.videos(roomId));
+  } catch (err) {
+    console.error("Cache delete error (postVideo):", err);
+  }
 };
 
 module.exports = {
