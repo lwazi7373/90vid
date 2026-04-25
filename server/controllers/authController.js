@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken"); // create tokens
+const bcrypt = require("bcrypt"); // encrypt passwords
 const { badRequest, notFound } = require("../errors/httpErrors");
 const authService = require("../services/authService");
 

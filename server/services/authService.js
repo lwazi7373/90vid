@@ -1,5 +1,5 @@
 const connectDB = require("../db/Connect"); // Database connection
-const bcrypt = require("bcrypt"); // encrypt passwords
+const bcrypt = require("bcrypt"); // decrypt passwords
 const {forbidden, notFound } = require("../errors/httpErrors");
 const {getCache, setCache, deleteCache, increment, setExpiry} = require("../cache/cacheService");
 
@@ -226,25 +226,25 @@ const getCurrentUser = async (userId) => {
     [userId]
   );
 
-  return {
-    userId: user.userId,
-    userName: user.userName,
-    emailAddress: user.emailAddress,
-    contactNo: user.contactNo,
-    isActive: user.isActive,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
-    roles: user.roles ? user.roles.split(",") : [],
-    rooms: {
-      created: createdRooms,
-      permitted: permittedRooms,
-    },
-    uploadStats: {
-      totalImages: imageStats.totalImages,
-      totalVideos: videoStats.totalVideos,
-      totalDurationSeconds: videoStats.totalDurationSeconds,
-    },
-  };
+  const fullUser = {
+  userId: user.userId,
+  userName: user.userName,
+  emailAddress: user.emailAddress,
+  contactNo: user.contactNo,
+  isActive: user.isActive,
+  createdAt: user.createdAt,
+  updatedAt: user.updatedAt,
+  roles: user.roles ? user.roles.split(",") : [],
+  rooms: {
+    created: createdRooms,
+    permitted: permittedRooms,
+  },
+  uploadStats: {
+    totalImages: imageStats.totalImages,
+    totalVideos: videoStats.totalVideos,
+    totalDurationSeconds: videoStats.totalDurationSeconds,
+  },
+};
 
   // Cache the user's profile information 
   try {
@@ -252,6 +252,8 @@ const getCurrentUser = async (userId) => {
   } catch (err) {
     console.error("Cache set error (getCurrentUser):", err);
   }
+
+  return fullUser;
 };
 
 module.exports = {registerUser, loginUser, getCurrentUser}
