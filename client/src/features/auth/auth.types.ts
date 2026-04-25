@@ -1,9 +1,23 @@
-// ============= ENTITY TYPES =============
+// ================================================= ENTITY TYPES ======================================================
 export interface AuthUser {
   userId: number;
   userName: string;
 }
-
+export interface Room {
+  roomId: number;
+  roomName: string;
+  description: string | null;
+  createdAt: string;
+}
+export interface PermittedRoom {
+  permissionId: number;
+  roomId: number;
+  roomName: string;
+  canUpload: number;
+  canDelete: number;
+  canEditRoom: number;
+  grantedAt: string;
+}
 export interface User {
   userId: number;
   userName: string;
@@ -15,7 +29,7 @@ export interface User {
   roles: string[];
   rooms: {
     created: Room[];
-    permitted: Room[];
+    permitted: PermittedRoom[];
   };
   uploadStats: {
     totalImages: number;
@@ -24,15 +38,7 @@ export interface User {
   };
 }
 
-// Room shape used inside User --> Return to this
-export interface Room {
-  roomId: number;
-  roomName: string;
-  description: string | null;
-  createdAt: string;
-}
-
-// ============= REQUEST TYPES ============= 
+// ====================================================== REQUEST TYPES =============================================================
 export interface RegisterRequest {
     userName: string;
     userPassword: string;
@@ -46,7 +52,7 @@ export interface LoginRequest {
     userPassword: string;
 }
 
-// ============= RESPONSE TYPES ============= 
+// =================================================== RESPONSE TYPES =======================================================
 export interface RegisterResponse {
     msg: string;
 }
