@@ -109,6 +109,13 @@ const permitUser = async (roomId, creatorId, { userId, canUpload, canDelete, can
     ]
   );
 
+  // Invalidate caches
+  try {
+    await deleteCache(keys.user.profile(userId));
+  } catch (err) {
+    console.error("Cache delete error (deleteRoom):", err);
+  }
+
   return {
     permissionId: result.insertId,
     roomId,
@@ -144,6 +151,13 @@ const revokeUser = async (roomId, creatorId, targetUserId) => {
     `DELETE FROM RoomPermissions WHERE roomId = ? AND userId = ?`,
     [roomId, targetUserId]
   );
+
+  // Invalidate caches
+  try {
+    await deleteCache(keys.user.profile(userId));
+  } catch (err) {
+    console.error("Cache delete error (deleteRoom):", err);
+  }
 };
 
 module.exports = { permittedUsers, permitUser, revokeUser };

@@ -1,7 +1,7 @@
 const connectDB = require("../db/Connect"); // Database connection
 const bcrypt = require("bcrypt"); // encrypt passwords
 const {forbidden, notFound } = require("../errors/httpErrors");
-const {getCache, deleteCache, increment, setExpiry} = require("../cache/cacheService");
+const {getCache, setCache, deleteCache, increment, setExpiry} = require("../cache/cacheService");
 
 const keys = require("../cache/cacheKeys");
 
@@ -145,6 +145,21 @@ const loginUser = async (userName, userPassword) => {
 const getCurrentUser = async (userId) => {
   const db = connectDB;
 
+   const cacheKey = keys.user.profile(userId);
+
+  // Try to get user from cache first
+  try {
+    const cachedUser = await getCache(cacheKey);
+    if (cachedUser) {
+      console.log("Cache HIT: getCurrentUser");
+      return cachedUser;
+    }
+  } catch (err) {
+    console.error("Cache error (getCurrentUser):", err);
+  }
+
+  console.log("Cache MISS: getCurrentUser");
+
   // Core user info + roles
   const [userRows] = await db.query(
     `SELECT 
@@ -230,6 +245,13 @@ const getCurrentUser = async (userId) => {
       totalDurationSeconds: videoStats.totalDurationSeconds,
     },
   };
+
+  // Cache the user's profile information 
+  try {
+    await setCache(cacheKey, fullUser, 120); // shorter TTL (2 min)
+  } catch (err) {
+    console.error("Cache set error (getCurrentUser):", err);
+  }
 };
 
 module.exports = {registerUser, loginUser, getCurrentUser}

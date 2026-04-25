@@ -200,6 +200,7 @@ const createRoom = async (userId, { roomName, description }) => {
   try {
     await deleteCache(keys.rooms.user(userId));
     await deleteCache(keys.rooms.all());
+    await deleteCache(keys.user.profile(userId));
   } catch (err) {
     console.error("Cache delete error (createRoom):", err);
   }
@@ -256,6 +257,7 @@ const updateRoom = async (roomId, userId, { roomName, description }) => {
       await deleteCache(keys.room(roomId));
       await deleteCache(keys.rooms.user(room.createdBy));
       await deleteCache(keys.rooms.all());
+      await deleteCache(keys.user.profile(userId));
   } catch (err) {
       console.error("Cache delete error (updateRoom):", err);
   }
@@ -294,6 +296,7 @@ const deleteRoom = async (roomId, userId) => {
     await deleteCache(keys.room(roomId));
     await deleteCache(keys.rooms.user(userId));
     await deleteCache(keys.rooms.all());
+    await deleteCache(keys.user.profile(userId));
   } catch (err) {
     console.error("Cache delete error (deleteRoom):", err);
   }

@@ -141,6 +141,7 @@ const postImage = async (roomId, userId, file) => {
   // Invalidate on post action
   try {
     await deleteCache(keys.media.images(roomId));
+    await deleteCache(keys.user.profile(userId));
   } catch (err) {
     console.error("Cache delete error (postImage):", err);
   }
@@ -174,6 +175,7 @@ const removeImage = async (roomId, imageId, userId) => {
   // Invalidate on remove action
   try {
     await deleteCache(keys.media.images(roomId));
+    await deleteCache(keys.user.profile(userId));
   } catch (err) {
     console.error("Cache delete error (removeImage):", err);
   }
@@ -299,6 +301,7 @@ const postVideo = async (roomId, userId, { title, description, fileUrl, thumbnai
   // Invalidate on post action
   try {
     await deleteCache(keys.media.videos(roomId));
+    await deleteCache(keys.user.profile(userId));
   } catch (err) {
     console.error("Cache delete error (postVideo):", err);
   }
@@ -327,6 +330,7 @@ const removeVideo = async (roomId, videoId, userId) => {
   // Invalidate on remove action
   try {
     await deleteCache(keys.media.videos(roomId));
+    await deleteCache(keys.user.profile(userId));
   } catch (err) {
     console.error("Cache delete error (postVideo):", err);
   }
