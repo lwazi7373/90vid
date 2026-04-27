@@ -14,17 +14,17 @@ const permittedUsers = async (req, res, next) => {
 
 const permitUser = async (req, res, next) => {
   try {
-    const { roomId } = req.params;
+    const roomId = parseInt(req.params.roomId);
     const creatorId = req.user.userId;
     const { userId, canUpload, canDelete, canEditRoom } = req.body;
 
     if (!userId) return next(badRequest("userId is required in the request body"));
 
     const permission = await permissionService.permitUser(roomId, creatorId, {
-      userId,
-      canUpload,
-      canDelete,
-      canEditRoom
+      userId: parseInt(userId),
+      canUpload: parseInt(canUpload),
+      canDelete: parseInt(canDelete),
+      canEditRoom: parseInt(canEditRoom),
     });
 
     return res.status(201).json(permission);
