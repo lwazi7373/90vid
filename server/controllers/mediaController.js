@@ -43,7 +43,8 @@ const getVideo = async (req, res, next) => {
 
 const postImage = async (req, res, next) => {
   try {
-    const { roomId } = req.params;
+    //const { roomId } = req.params;
+    const roomId = parseInt(req.params.roomId);
     const userId = req.user.userId;
 
     if (!req.file) return next(badRequest("No image file was provided"));
@@ -77,7 +78,8 @@ const getVideoUploadUrl = async (req, res, next) => {
 
 const postVideo = async (req, res, next) => {
   try {
-    const { roomId } = req.params;
+    //const { roomId } = req.params;
+    const roomId = parseInt(req.params.roomId);
     const userId = req.user.userId;
     const { title, fileUrl, description, thumbnailUrl, durationSeconds } = req.body;
 
