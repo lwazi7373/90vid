@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Vault - Search Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary": "#293043",
+              "surface-container-high": "#292a2f",
+              "outline": "#8c909e",
+              "on-surface-variant": "#c2c6d5",
+              "inverse-on-surface": "#2f3036",
+              "secondary-fixed": "#dbe2fb",
+              "tertiary-fixed-dim": "#c0c6da",
+              "on-primary-container": "#00285b",
+              "inverse-primary": "#005bbf",
+              "secondary-fixed-dim": "#bfc6de",
+              "on-secondary-fixed-variant": "#3f465b",
+              "background": "#121318",
+              "on-primary-fixed": "#001a40",
+              "surface-variant": "#34343a",
+              "surface-container": "#1e1f25",
+              "on-tertiary-fixed": "#151b2a",
+              "on-secondary-fixed": "#141b2d",
+              "surface-tint": "#acc7ff",
+              "secondary-container": "#3f465b",
+              "on-background": "#e3e1e9",
+              "primary": "#acc7ff",
+              "on-tertiary-fixed-variant": "#404657",
+              "on-surface": "#e3e1e9",
+              "primary-container": "#508ff8",
+              "tertiary-fixed": "#dde2f7",
+              "on-tertiary-container": "#232939",
+              "outline-variant": "#424753",
+              "on-tertiary": "#2a3040",
+              "on-primary-fixed-variant": "#004492",
+              "primary-fixed": "#d7e2ff",
+              "surface-container-low": "#1a1b21",
+              "surface-dim": "#121318",
+              "inverse-surface": "#e3e1e9",
+              "tertiary": "#c0c6da",
+              "tertiary-container": "#8a90a3",
+              "on-secondary-container": "#aeb4cd",
+              "surface": "#121318",
+              "surface-container-highest": "#34343a",
+              "error": "#ffb4ab",
+              "on-error": "#690005",
+              "secondary": "#bfc6de",
+              "surface-bright": "#38393f",
+              "surface-container-lowest": "#0d0e13",
+              "error-container": "#93000a",
+              "primary-fixed-dim": "#acc7ff",
+              "on-primary": "#002f68",
+              "on-error-container": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #424753;
+        border-radius: 10px;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body antialiased min-h-screen">
+<!-- TopNavBar Shell -->
+<nav class="fixed top-0 w-full z-50 h-16 bg-[#0D0E13]/80 backdrop-blur-md flex justify-between items-center px-6 lg:pl-[244px] w-full focus-within:scale-[1.02] transition-transform duration-200">
+<div class="flex items-center gap-8 w-full max-w-4xl">
+<span class="text-2xl font-black tracking-[-0.04em] text-[#e3e1e9] font-headline">Vault</span>
+<!-- Search Container -->
+<div class="relative flex-1 group">
+<div class="flex items-center bg-surface-container-low rounded-md px-4 py-2 border border-outline-variant/15 group-focus-within:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant mr-3">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface w-full font-medium" placeholder="Search archive..." type="text" value="Vault"/>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">keyboard_command_key</span>
+</div>
+<!-- Search Results Overlay -->
+<div class="absolute top-full left-0 w-full mt-2 bg-[#1E1F25] rounded-xl shadow-[0_24px_48px_rgba(0,0,0,0.5)] border border-[#424753]/15 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
+<div class="max-h-[819px] overflow-y-auto custom-scrollbar">
+<!-- Rooms Section -->
+<div class="p-2">
+<div class="px-3 py-2">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant font-label">Rooms</span>
+</div>
+<div class="space-y-1">
+<!-- Result Item 1 -->
+<a class="flex items-center justify-between p-3 rounded-lg hover:bg-[#4F8EF7]/10 group transition-all duration-200" href="#">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container-high shrink-0">
+<img class="w-full h-full object-cover" data-alt="close up of glowing neon circuit board patterns in deep blue and obsidian black professional photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe_WQMyx-HKMrXFkh1yqE7ZDT2qo8jkECPMgRvLzT4dJqTI7Y8iS8ybveNhoILNv3zFSb_oRHTsrR4T3SH1e_4_6nk9zJDgrtKDOra_ZHFWyC8UAHW9dXFX4cf764sORtpCCDAtG5w2XrWYuerb981a8wLLieFTr3mEPH-4wGdfQeIbNxWNAUjgkcB6HMDvOIwRrNkLFonQBK_oxi4caI8ACvnTxio6hIfkCNaX6VTtl9mYAkLkXMHqRp3yRonU0XcgSFqD1rtV7A"/>
+</div>
+<div>
+<div class="text-sm font-semibold text-on-surface group-hover:text-[#4F8EF7] transition-colors">The Obsidian Vault</div>
+<div class="text-xs text-on-surface-variant">Created by <span class="text-on-surface/70">Erik Vance</span></div>
+</div>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-highest/50">
+<span class="material-symbols-outlined text-[16px] text-[#4F8EF7]">perm_media</span>
+<span class="text-[10px] font-bold text-on-surface-variant">1.2k</span>
+</div>
+</a>
+<!-- Result Item 2 -->
+<a class="flex items-center justify-between p-3 rounded-lg hover:bg-[#4F8EF7]/10 group transition-all duration-200" href="#">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container-high shrink-0">
+<img class="w-full h-full object-cover" data-alt="minimalist architectural shot of a brutalist concrete gallery space with dramatic shadows and sharp angles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYlRK9OLGs1iVrjDxqTLZegXwykUSSAFM_DHNE9nlfQYbOLMEOqBG0S0KibPVNsqzQBMpl7fM7N1ENqapGpp26W0VklhtGKZUCfKW0SPZTI2HRlsxUA6_DoYW_-SzVXpKDF-V2-5DV9bPQaDFb7a-kq2nGFg8cVULMhGiBPYHzSzC6_pTIthCjg-0aaSamaf_KV4eJYPn5XhQXnMYZ7ToRMErA1_9j8_49EeEC3naJEAk0R5T0z2VwIPfUfYTiZO7ztPIC8FZqAu8"/>
+</div>
+<div>
+<div class="text-sm font-semibold text-on-surface group-hover:text-[#4F8EF7] transition-colors">Digital Vault 04</div>
+<div class="text-xs text-on-surface-variant">Created by <span class="text-on-surface/70">Curator AI</span></div>
+</div>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-highest/50">
+<span class="material-symbols-outlined text-[16px] text-[#4F8EF7]">perm_media</span>
+<span class="text-[10px] font-bold text-on-surface-variant">482</span>
+</div>
+</a>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-[1px] bg-[#424753]/30 my-1 mx-4"></div>
+<!-- Users Section -->
+<div class="p-2">
+<div class="px-3 py-2">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant font-label">Users</span>
+</div>
+<div class="grid grid-cols-1 gap-1">
+<!-- User 1 -->
+<a class="flex items-center gap-3 p-3 rounded-lg hover:bg-[#4F8EF7]/10 transition-all duration-200" href="#">
+<div class="relative">
+<img class="w-8 h-8 rounded-full object-cover border border-outline-variant/30" data-alt="portrait of a professional male designer in his 30s with soft cinematic lighting and dark studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa0uXtRxjt1mTO9RT8zqFbOl6wGUSs2JggZNbz6Jv5af2OENW2yj8wdMBgk8TOrFjA_hlZJhhaHMrvcz0zOyvzSG8xcg3T1Y_E72H6Pq3abCa1Uxb-ZdVYNKVjRiR-OOUArcA3QmReLYXCWRIFv7tLYHhGV7AZShNzH5trlFYgf3nGeJ-g39-pYJt9-BNqRoyi8chxjVuOWH9FLPjd3LgqghSlzKLFd1PsTXBhXIFhL3y5WHSdZRtrVvTuX64byamlDn7Z_ItO1os"/>
+<div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-primary border-2 border-[#1E1F25] rounded-full"></div>
+</div>
+<div>
+<div class="text-sm font-medium text-on-surface">Vault_Master_99</div>
+<div class="text-[10px] text-on-surface-variant">Top Contributor</div>
+</div>
+</a>
+<!-- User 2 -->
+<a class="flex items-center gap-3 p-3 rounded-lg hover:bg-[#4F8EF7]/10 transition-all duration-200" href="#">
+<img class="w-8 h-8 rounded-full object-cover border border-outline-variant/30" data-alt="close-up portrait of a woman with glasses and focused expression in a dark high-tech environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5RHZJ16PjO4ln30URQc9OoTA9K1Hut5ZvReU5P3PFPYJOabtK5VjrQt6ZQ9gUKCLETXF_APCDFnW7klFKu75uoH486lT_DXfRa8mV0ailnHKQsHM7MwEsqkx8H7uzKQmteBrb-sy87MmZ8On7l1wQ_c3IQxaxDGR2Mn6HbPTr32MOb5GU0NaIUeReMosdYS8YZvD95EWTqnxJsZvBsJMpN2w7NGJFksQB3ARdfkiZHJzEpnI1N_0OMeQQ7UGQLGzEBrBGLmodBk8"/>
+<div>
+<div class="text-sm font-medium text-on-surface">SarahVault</div>
+<div class="text-[10px] text-on-surface-variant">Lead Archivist</div>
+</div>
+</a>
+</div>
+</div>
+<!-- Footer Search Link -->
+<div class="p-4 bg-surface-container-low/50 border-t border-[#424753]/15">
+<button class="w-full py-2 flex items-center justify-center gap-2 text-xs font-bold text-[#4F8EF7] hover:bg-[#4F8EF7]/10 rounded-md transition-colors">
+                                View all results for "Vault"
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="portrait of a focused professional user with soft key lighting and dark textured background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgz_vwifdgezHuW9rofe1zyBYD8HwuMen7-Pml2j88M54htOwkXcgZcRhC_dHR0HgUIuATPfUVOvGbqqQ0dfuiZ_bmDMoKy1XOvmGGVVbgo14qIkb6wwz3ZignQTRwaT9hhgtScm2r8EiQWiEB6iWvF3zpki6lfUkxw7M8GK4U29Fwd64rGcjLYvGVBookshPrBdGn8RHEUrcnHNva_nWswe47rXnuTDfn6MgUkE_EzJhUDeKFRNHl2DFatuNxPj_nVag9vGKArWw"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar Shell -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-full w-[220px] z-40 bg-[#0D0E13]/80 backdrop-blur-xl border-r border-[#424753]/15 py-6 shadow-[24px_0_48px_rgba(0,0,0,0.5)] font-headline">
+<div class="px-6 mb-10">
+<div class="text-xl font-bold tracking-tighter text-[#e3e1e9]">The Vault</div>
+<div class="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant/60 font-label mt-1">Digital Curator</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 text-[#9497a1] hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-sm font-medium">Discover</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#4F8EF7] bg-[#4F8EF7]/10 border-l-2 border-[#4F8EF7] transition-all duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder_shared</span>
+<span class="text-sm font-bold">My Rooms</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#9497a1] hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300" href="#">
+<span class="material-symbols-outlined">lock_open</span>
+<span class="text-sm font-medium">Permitted Rooms</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#9497a1] hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-sm font-medium">User Profile</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<div class="p-4 bg-surface-container-high rounded-xl border border-outline-variant/10">
+<div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Storage</div>
+<div class="h-1 w-full bg-[#0D0E13] rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[75%]"></div>
+</div>
+<div class="mt-2 text-[10px] text-on-surface/50">7.2 GB of 10 GB used</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:pl-[220px] pt-16 min-h-screen">
+<div class="p-8 max-w-7xl mx-auto">
+<!-- Page Header -->
+<div class="mb-12">
+<h1 class="text-4xl font-extrabold tracking-tight text-on-surface font-headline mb-4">My Rooms</h1>
+<p class="text-on-surface-variant max-w-2xl text-lg leading-relaxed">
+                    Manage your private archives and curated collections. All rooms are encrypted and protected by the Vault protocol.
+                </p>
+</div>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<!-- Large Featured Room Card -->
+<div class="md:col-span-2 relative group overflow-hidden rounded-xl bg-surface-container-high aspect-video lg:aspect-[21/9]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="cinematic wide shot of a high-tech underground server room with blue ambient lighting and glass partitions" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMgGwKgD3JzmHGdbSeRFPl359tfRp1BDI3bW_Xe2s529qnvQlWAzf4hxp2jS5Qv7PbubHhLiD38G4QIa5tTgRSM0LerLH3zheSM6nVj_y_TvCVik6n1zqArKcY4aKh-sb7z0Z-li8N8YXgDmNV_OBd0Rv-rcIsGep1H8yetPtbel2R-bDFK-XMs4mKIFdtcVOkibMbye8S4lXQm91Gzy99UC6z33mqcYRKGQK6qF4_K0TJw9MUOPK8vttVKkl740L-1Zt7WrAPH54"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0D0E13] via-[#0D0E13]/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8 w-full">
+<div class="flex items-center gap-2 mb-3">
+<span class="px-2 py-0.5 rounded-sm bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest">Active</span>
+<span class="text-on-surface-variant text-xs font-medium">Updated 2h ago</span>
+</div>
+<h2 class="text-3xl font-bold text-on-surface font-headline mb-2">Mainframe Archives</h2>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">database</span>
+<span class="text-sm text-on-surface-variant">2.4 TB</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">group</span>
+<span class="text-sm text-on-surface-variant">12 Collaborators</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Stats Card -->
+<div class="bg-surface-container flex flex-col p-8 rounded-xl border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary-container text-4xl mb-6">shield_lock</span>
+<h3 class="text-xl font-bold font-headline mb-4">Security Overview</h3>
+<div class="space-y-4 flex-1">
+<div class="flex justify-between items-center">
+<span class="text-sm text-on-surface-variant">Encryption Level</span>
+<span class="text-sm font-bold text-primary">AES-256</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-on-surface-variant">Access Logs</span>
+<span class="text-sm font-bold text-on-surface">Protected</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-on-surface-variant">Intrusion Detection</span>
+<span class="text-sm font-bold text-[#4CAF50]">Online</span>
+</div>
+</div>
+<button class="mt-8 py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-md hover:opacity-90 transition-opacity">
+                        Audit System
+                    </button>
+</div>
+<!-- Bento Grid Continued -->
+<div class="bg-surface-container-high rounded-xl p-6 hover:shadow-[0_0_15px_rgba(79,142,247,0.1)] transition-all">
+<div class="w-12 h-12 rounded-lg bg-[#1E1F25] flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary">photo_library</span>
+</div>
+<h4 class="text-lg font-bold font-headline mb-2">Visual Assets</h4>
+<p class="text-sm text-on-surface-variant mb-6">High-resolution media and creative assets vault.</p>
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-high object-cover" data-alt="abstract artistic render of digital waves in shades of blue and purple" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClZm4ljXXF5hvKxlbgTiKJZk8xUMUH3vPeyQDb4jfk-57XODN4yOcNSYZhyaNyApHw1NGxf-1Qc3QjcYzOQ34vKVeuiuismRbe7YCQeIvbnx1jEZ7dX_zqrsQXDDV2ZnZMyC35ANXxNeRrvTTh3mIT_QZKKY_0ngxx2BCaFUoWz8fF5PrvM8DHxQljLzZaCOdbEQ8P8Vc0PyGnT4qwx6Fc9SPKJ10fsNknvfl-0hKmDLV5ddsWmo6P4hgUvlj5snPM0jp91jJJlSY"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-high object-cover" data-alt="macro photography of futuristic metal surface with complex textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC58Y32Nr2mZrcZmqUcq_ne3kwGTGqwq_Cz85PJFzv2Rxiirri_Itr4B2yL6w7NkFWH1ZmQ40ZfgN3oavgHAZEi3eDNze6EOFbcPU-f5UOvH163XCxf1PVU0UkT-wj7yra6BbX2tbjsSULzR62ViN4Kb2pE1_DTXpgxx6gSqidwqW4DPBs4oLP_3cuUadsuaontHzIhDf2_Qjq2-6xL-fH2WLcomM5_FefDy2jcZrPpMP3sdwCUHTOkuuhfUvVxn03d0iL7Bv410fs"/>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-high bg-[#1E1F25] flex items-center justify-center text-[10px] font-bold">+14</div>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-xl p-6 hover:shadow-[0_0_15px_rgba(79,142,247,0.1)] transition-all">
+<div class="w-12 h-12 rounded-lg bg-[#1E1F25] flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary">description</span>
+</div>
+<h4 class="text-lg font-bold font-headline mb-2">Documents</h4>
+<p class="text-sm text-on-surface-variant mb-6">Confidential contracts, blueprints and technical docs.</p>
+<div class="text-xs font-bold text-primary flex items-center gap-1">
+                        Access Folder <span class="material-symbols-outlined text-sm">chevron_right</span>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-xl p-6 hover:shadow-[0_0_15px_rgba(79,142,247,0.1)] transition-all">
+<div class="w-12 h-12 rounded-lg bg-[#1E1F25] flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary">history</span>
+</div>
+<h4 class="text-lg font-bold font-headline mb-2">Audit Logs</h4>
+<p class="text-sm text-on-surface-variant mb-6">Timeline of all interactions within the vault.</p>
+<div class="text-xs font-bold text-primary flex items-center gap-1">
+                        View Logs <span class="material-symbols-outlined text-sm">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell (Mobile only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-safe h-16 bg-[#1E1F25]/90 backdrop-blur-lg border-t border-[#424753]/15 z-50">
+<a class="flex flex-col items-center justify-center text-[#9497a1] py-2" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4F8EF7] py-2 scale-110" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder_shared</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">My Rooms</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9497a1] py-2" href="#">
+<span class="material-symbols-outlined">lock_open</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">Permitted</span>
+</a>
+</nav>
+<!-- Contextual FAB -->
+<div class="fixed bottom-24 right-8 lg:bottom-12 lg:right-12 z-40">
+<button class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary shadow-lg flex items-center justify-center hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-2xl">add</span>
+</button>
+</div>
+</body></html>

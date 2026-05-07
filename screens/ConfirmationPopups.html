@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Vault | Confirmations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary": "#293043",
+            "surface-container-high": "#292a2f",
+            "outline": "#8c909e",
+            "on-surface-variant": "#c2c6d5",
+            "inverse-on-surface": "#2f3036",
+            "secondary-fixed": "#dbe2fb",
+            "tertiary-fixed-dim": "#c0c6da",
+            "on-primary-container": "#00285b",
+            "inverse-primary": "#005bbf",
+            "secondary-container": "#3f465b",
+            "on-background": "#e3e1e9",
+            "primary": "#acc7ff",
+            "on-surface": "#e3e1e9",
+            "primary-container": "#508ff8",
+            "outline-variant": "#424753",
+            "surface-container-low": "#1a1b21",
+            "surface-container": "#1e1f25",
+            "surface-container-lowest": "#0d0e13",
+            "surface-bright": "#38393f",
+            "surface": "#121318",
+            "error": "#ffb4ab",
+            "on-error": "#690005",
+            "error-container": "#93000a",
+          },
+          fontFamily: {
+            "headline": ["Manrope"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+</script>
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        line-height: 1;
+        text-transform: none;
+        letter-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        direction: ltr;
+    }
+</style>
+</head>
+<body class="bg-surface-container-lowest font-body text-on-surface antialiased">
+
+<!-- Fixed blurred background dashboard -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none opacity-20 flex items-center justify-center z-0">
+  <div class="w-full max-w-7xl grid grid-cols-3 gap-8 p-12">
+    <div class="h-64 bg-surface-container-high rounded-xl"></div>
+    <div class="h-64 bg-surface-container-high rounded-xl"></div>
+    <div class="h-64 bg-surface-container-high rounded-xl"></div>
+    <div class="h-64 bg-surface-container-high rounded-xl"></div>
+    <div class="h-64 bg-surface-container-high rounded-xl"></div>
+    <div class="h-64 bg-surface-container-high rounded-xl"></div>
+  </div>
+</div>
+
+<!-- Fixed dark tinted backdrop (non-scrolling) -->
+<div class="fixed inset-0 bg-[#0E0F14]/90 backdrop-blur-sm z-10 pointer-events-none"></div>
+
+<!-- Scrollable overlay content -->
+<div class="relative z-20 min-h-screen flex items-start justify-center px-6 pt-24 pb-24 lg:pl-[244px]">
+  <div class="flex flex-col gap-8 w-full max-w-lg">
+
+    <!-- Grant Access Confirmation -->
+    <div class="bg-[#1E1F25] rounded-xl shadow-[0_24px_48px_rgba(0,0,0,0.5)] border border-outline-variant/15 overflow-hidden">
+      <div class="p-8">
+        <div class="flex items-start gap-5">
+          <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary text-2xl">lock_open</span>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-headline text-xl font-bold tracking-tight text-on-surface">Grant Access</h3>
+            <p class="text-on-surface-variant text-sm leading-relaxed">Confirming this will allow <span class="text-primary">Marcus Holloway</span> to view and download all encrypted files within the 'Project Obsidian' vault.</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface-container-high/50 p-6 flex justify-end gap-3">
+        <button class="px-5 py-2.5 text-sm font-label font-medium text-on-surface-variant hover:text-on-surface transition-colors">Cancel</button>
+        <button class="px-6 py-2.5 text-sm font-label font-bold rounded-xl bg-gradient-to-br from-primary to-primary-container text-on-primary shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">Grant Access</button>
+      </div>
+    </div>
+
+    <!-- Revoke Confirmation -->
+    <div class="bg-[#1E1F25] rounded-xl shadow-[0_24px_48px_rgba(0,0,0,0.5)] border border-outline-variant/15 overflow-hidden">
+      <div class="p-8">
+        <div class="flex items-start gap-5">
+          <div class="w-12 h-12 rounded-lg bg-tertiary-container/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-tertiary text-2xl">person_remove</span>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-headline text-xl font-bold tracking-tight text-on-surface">Revoke Permission</h3>
+            <p class="text-on-surface-variant text-sm leading-relaxed">Are you sure you want to revoke access for <span class="text-on-surface font-medium">Sarah Chen</span>? They will immediately lose synchronization with the curating node.</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface-container-high/50 p-6 flex justify-end gap-3">
+        <button class="px-5 py-2.5 text-sm font-label font-medium text-on-surface-variant hover:text-on-surface transition-colors">Cancel</button>
+        <button class="px-6 py-2.5 text-sm font-label font-bold rounded-xl bg-on-surface text-surface-container-lowest hover:scale-[1.02] transition-transform">Confirm Revoke</button>
+      </div>
+    </div>
+
+    <!-- Delete Room Confirmation (Destructive) -->
+    <div class="bg-[#1E1F25] rounded-xl shadow-[0_24px_48px_rgba(0,0,0,0.5)] border border-outline-variant/15 overflow-hidden">
+      <div class="p-8">
+        <div class="flex items-start gap-5">
+          <div class="w-12 h-12 rounded-lg bg-error-container/20 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-error text-2xl">delete_forever</span>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-headline text-xl font-bold tracking-tight text-on-surface">Delete Vault Room</h3>
+            <p class="text-on-surface-variant text-sm leading-relaxed">This action is irreversible. Deleting <span class="text-error font-medium">'Archive_2023_Final'</span> will permanently scrub all 2.4 TB of data from the distributed ledger.</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface-container-high/50 p-6 flex justify-end gap-3">
+        <button class="px-5 py-2.5 text-sm font-label font-medium text-on-surface-variant hover:text-on-surface transition-colors">Keep Room</button>
+        <button class="px-6 py-2.5 text-sm font-label font-bold rounded-xl bg-error text-on-error shadow-lg shadow-error/20 hover:scale-[1.02] transition-transform">Delete Permanently</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Sidebar Navigation -->
+<aside class="hidden lg:flex flex-col h-screen py-6 fixed left-0 top-0 w-[220px] z-40 bg-[#0D0E13]/80 backdrop-blur-xl border-r border-[#424753]/15 shadow-[24px_0_48px_rgba(0,0,0,0.5)] font-['Manrope'] antialiased tracking-tight">
+  <div class="px-6 mb-10">
+    <h1 class="text-xl font-bold tracking-tighter text-[#e3e1e9]">The Vault</h1>
+    <p class="text-[10px] text-primary tracking-widest uppercase opacity-70">Digital Curator</p>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex items-center gap-3 px-6 py-3 text-[#9497a1] hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300 ease-in-out" href="#">
+      <span class="material-symbols-outlined text-lg">explore</span>
+      <span class="text-sm font-medium">Discover</span>
+    </a>
+    <a class="flex items-center gap-3 px-6 py-3 text-[#4F8EF7] bg-[#4F8EF7]/10 border-l-2 border-[#4F8EF7] transition-all duration-300 ease-in-out" href="#">
+      <span class="material-symbols-outlined text-lg">folder_shared</span>
+      <span class="text-sm font-medium">My Rooms</span>
+    </a>
+    <a class="flex items-center gap-3 px-6 py-3 text-[#9497a1] hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300 ease-in-out" href="#">
+      <span class="material-symbols-outlined text-lg">lock_open</span>
+      <span class="text-sm font-medium">Permitted Rooms</span>
+    </a>
+    <a class="flex items-center gap-3 px-6 py-3 text-[#9497a1] hover:bg-[#1E1F25] hover:text-[#e3e1e9] transition-all duration-300 ease-in-out" href="#">
+      <span class="material-symbols-outlined text-lg">person</span>
+      <span class="text-sm font-medium">User Profile</span>
+    </a>
+  </nav>
+  <div class="px-6 mt-auto">
+    <div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl">
+      <img alt="User profile avatar" class="w-8 h-8 rounded-full bg-primary-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhsUmoJEz7cL_Grtb_1JnK1GB4VhwcwZkE9oc6CCpnIHnIBjYy-zLDBs6vWHIaHhymjOkp7O2gu-TTnYyzAswxGA6ZE445HMlhmUlW4VE6P-qobJa6-LQJkSpgvIcvTNE3GXVOZ-WuBaDq28TZll3ZMxKJmsO4KcpOsOLYMD0DVXmx1IB_P3wRn8zcfgme23i0Hl6FL0h24wrs6up5VjG6c44bdlpqtRTy5XJRvWjMSLqRxMnmOKCoV9NlNjspQoxuUBW1bi_q7dc"/>
+      <div class="overflow-hidden">
+        <p class="text-xs font-bold text-on-surface truncate">Admin_Vault</p>
+        <p class="text-[10px] text-on-surface-variant truncate">Master Node</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 h-16 flex justify-between items-center px-6 lg:pl-[244px] bg-[#0D0E13]/80 backdrop-blur-md bg-[#1E1F25]">
+  <div class="flex items-center gap-4">
+    <span class="text-2xl font-black tracking-[-0.04em] text-[#e3e1e9]">Vault</span>
+  </div>
+  <div class="flex items-center gap-4">
+    <div class="hidden md:flex bg-surface-container-low px-4 py-1.5 rounded-full items-center gap-2 border border-outline-variant/10 focus-within:scale-[1.02] transition-transform duration-200">
+      <span class="material-symbols-outlined text-on-surface-variant text-lg">search</span>
+      <input class="bg-transparent border-none focus:ring-0 text-xs text-on-surface w-48 p-0" placeholder="Search archive..." type="text"/>
+    </div>
+    <button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+      <span class="material-symbols-outlined">settings</span>
+    </button>
+  </div>
+</header>
+
+<!-- Bottom Nav for Mobile -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-safe h-16 bg-[#1E1F25]/90 backdrop-blur-lg border-t border-[#424753]/15 shadow-[0_-8px_24px_rgba(0,0,0,0.4)] z-50">
+  <a class="flex flex-col items-center justify-center text-[#9497a1] py-2 active:scale-95 transition-transform" href="#">
+    <span class="material-symbols-outlined">explore</span>
+    <span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">Discover</span>
+  </a>
+  <a class="flex flex-col items-center justify-center text-[#4F8EF7] py-2 scale-110 active:scale-95 transition-transform" href="#">
+    <span class="material-symbols-outlined">folder_shared</span>
+    <span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">My Rooms</span>
+  </a>
+  <a class="flex flex-col items-center justify-center text-[#9497a1] py-2 active:scale-95 transition-transform" href="#">
+    <span class="material-symbols-outlined">lock_open</span>
+    <span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">Permitted</span>
+  </a>
+</nav>
+
+</body></html>
