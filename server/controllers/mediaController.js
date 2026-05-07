@@ -47,6 +47,8 @@ const postImage = async (req, res, next) => {
     const roomId = parseInt(req.params.roomId);
     const userId = req.user.userId;
 
+    //At this point the file is just a raw buffer sitting in the server's RAM
+    //made available through req.file attached to it by multer
     if (!req.file) return next(badRequest("No image file was provided"));
 
     const image = await mediaService.postImage(roomId, userId, req.file);

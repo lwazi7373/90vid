@@ -27,7 +27,7 @@ const uploadToS3 = async (fileBuffer, mimeType, folder) => {
     Body: fileBuffer,
     ContentType: mimeType,
   }));
-
+  //S3 returns nothing useful, so the helper constructs and returns the public URL itself.
   return `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
 };
 

@@ -1,4 +1,5 @@
 const connectDB = require("../db/Connect");
+const sharp = require("sharp"); // Compress images
 const { uploadToS3, deleteFromS3, generatePresignedUrl } = require("../utils/s3Helpers");
 const {badRequest, forbidden, notFound} = require("../errors/httpErrors");
 
@@ -52,6 +53,12 @@ const hasAccess = (room, permission, userId, permissionKey) => {
 
 ////////////////////////////////////////////////////////// Images /////////////////////////////////////////////////////////////////////
 
+/**
+ * Both the Original (fileURl) and the compressed (thumbnailUrl) are returned
+ * To ensure the correct representation for the context
+ * @param {number} roomId 
+ * @returns images
+ */
 const getImages = async (roomId) => {
   const db = connectDB;
 
@@ -76,6 +83,7 @@ const getImages = async (roomId) => {
     `SELECT 
       i.imageId,
       i.fileUrl,
+      i.thumbnailUrl,
       i.createdAt,
       u.userId   AS uploadedById,
       u.userName AS uploadedByName
@@ -96,6 +104,13 @@ const getImages = async (roomId) => {
   return images;
 };
 
+/**
+ * Get's a specific image
+ * Both the Original (fileURl) and the compressed (thumbnailUrl) are returned for consistency
+ * @param {number} roomId 
+ * @param {number} imageId 
+ * @returns image
+ */
 const getImage = async (roomId, imageId) => {
   const db = connectDB;
   await getRoomOrThrow(db, roomId);
@@ -104,6 +119,7 @@ const getImage = async (roomId, imageId) => {
     `SELECT 
       i.imageId,
       i.fileUrl,
+      i.thumbnailUrl,
       i.createdAt,
       u.userId   AS uploadedById,
       u.userName AS uploadedByName
@@ -130,12 +146,22 @@ const postImage = async (roomId, userId, file) => {
     throw forbidden("You do not have permission to upload to this room");
   }
 
-  // file.buffer and file.mimetype come from multer memoryStorage
-  const fileUrl = await uploadToS3(file.buffer, file.mimetype, "images");
+  // Upload original to S3
+  const fileUrl = await uploadToS3(file.buffer, file.mimetype, "images/originals");
+
+  // Generate thumbnail using Sharp (resize to 400px wide, maintain aspect ratio)
+  const thumbnailBuffer = await sharp(file.buffer)
+    .resize({ width: 400 })
+    .jpeg({ quality: 70 })
+    .toBuffer();
+
+  // Upload thumbnail to S3
+  // thumbnail is always saved as image/jpeg regardless of the original format 
+  const thumbnailUrl = await uploadToS3(thumbnailBuffer, "image/jpeg", "images/thumbnails");
 
   const [result] = await db.execute(
-    `INSERT INTO Images (fileUrl, uploadedBy, roomId) VALUES (?, ?, ?)`,
-    [fileUrl, userId, roomId]
+    `INSERT INTO Images (fileUrl, thumbnailUrl, uploadedBy, roomId) VALUES (?, ?, ?, ?)`,
+    [fileUrl, thumbnailUrl, userId, roomId]
   );
 
   // Invalidate on post action
@@ -146,7 +172,7 @@ const postImage = async (roomId, userId, file) => {
     console.error("Cache delete error (postImage):", err);
   }
 
-  return { imageId: result.insertId, fileUrl, roomId, uploadedBy: userId };
+  return { imageId: result.insertId, fileUrl, thumbnailUrl, roomId, uploadedBy: userId };
 };
 
 /**

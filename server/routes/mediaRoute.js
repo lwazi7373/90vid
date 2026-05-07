@@ -33,6 +33,8 @@ router.get("/rooms/:roomId/videos/:videoId", authenticateToken, mediaController.
  * POST /api/rooms/:roomId/images
  * Upload an image to a room -> (if creator or has canUpload permission)
  * imageUpload.single("image") tells multer to expect one file under the field name "image"
+ * Meaning The string "image" is the field name multer looks for in the incoming multipart form data.
+ * So the client must send the file under a field named "image"
  */
 router.post("/rooms/:roomId/images", authenticateToken, imageUpload.single("image"), handleUploadError, mediaController.postImage);
 
