@@ -43,7 +43,11 @@ const createRoom = async (req, res, next) => {
   try {
     const userId = req.user.userId;
     const { roomName, description } = req.body;
-    const room = await roomService.createRoom(userId, { roomName, description });
+
+    //Image that will act as the thumbnail for the room being created
+    if (!req.file) return next(badRequest("No image file was provided"));
+
+    const room = await roomService.createRoom(userId, roomName, description, req.file);
     return res.status(201).json(room);
   } catch (error) {
     next(error);

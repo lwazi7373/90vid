@@ -13,8 +13,11 @@ router.get("/rooms", authenticateToken, roomController.getRooms);
 /**
  * POST /api/rooms
  * Create a new room (auth user creates it) 
+ * A room has a thumbnail (Room-Card on the frontend) hence the image upload when creating it
  */
-router.post("/rooms", authenticateToken, roomController.createRoom);
+router.post("/rooms", authenticateToken, imageUpload.single("image"), handleUploadError, roomController.createRoom);
+
+//router.post("/rooms/:roomId/images", authenticateToken, imageUpload.single("image"), handleUploadError, mediaController.postImage);
 
 /**
  * GET /api/rooms

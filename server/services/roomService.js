@@ -1,5 +1,6 @@
 const connectDB = require("../db/Connect");
 const { badRequest, forbidden, notFound } = require("../errors/httpErrors");
+const { uploadToS3 } =  requird("../utils/s3Helpers");
 
 const { getCache, setCache, deleteCache } = require("../cache/cacheService");
 const keys = require("../cache/cacheKeys");
@@ -184,16 +185,19 @@ const getPermittedRooms = async (userId) => {
  * Invalidates affected caches
  * @param {Number} userId 
  * @param {String, String} param1 
- * @returns 
+ * @returns room data
  */
-const createRoom = async (userId, { roomName, description }) => {
+const createRoom = async (userId, roomName, description, file) => {
   const db = connectDB;
 
   if (!roomName) throw badRequest("roomName is required");
 
+  // Upload room thumbnail to S3
+  const thumbnailUrl = await uploadToS3(file.buffer, file.mimetype, "rooms/thumbnails");
+
   const [result] = await db.execute(
-    `INSERT INTO Rooms (roomName, description, createdBy) VALUES (?, ?, ?)`,
-    [roomName, description ?? null, userId]
+    `INSERT INTO Rooms (roomName, description, createdBy, thumbnailUrl) VALUES (?, ?, ?, ?)`,
+    [roomName, description ?? null, userId, thumbnailUrl]
   );
 
   // Invalidate caches
@@ -205,7 +209,7 @@ const createRoom = async (userId, { roomName, description }) => {
     console.error("Cache delete error (createRoom):", err);
   }
 
-  return { roomId: result.insertId, roomName, description, createdBy: userId };
+  return { roomId: result.insertId, roomName, description, createdBy: userId, thumbnailUrl };
 };
 
 /**
@@ -213,7 +217,7 @@ const createRoom = async (userId, { roomName, description }) => {
  * @param {Number} roomId 
  * @param {Number} userId 
  * @param {String, String} param2 
- * @returns 
+ * @returns updatedRoom
  */
 const updateRoom = async (roomId, userId, { roomName, description }) => {
   const db = connectDB;
