@@ -46,6 +46,20 @@ router.post("/rooms/:roomId/images", authenticateToken, imageUpload.single("imag
 router.post("/rooms/:roomId/videos/presigned-url", authenticateToken, mediaController.getVideoUploadUrl);
 
 /**
+ * POST /api/rooms/:roomId/videos/thumbnail-url
+ * Part of the video upload flow — Step 1.5 (runs after the client has uploaded the video to S3)
+ * 
+ * Since videos go directly from the client to S3 (never through our server),
+ * we can't generate the thumbnail server-side like we do for images.
+ * Instead, the client extracts a frame from the video using the Canvas API,
+ * then calls this endpoint to get a presigned URL to upload that frame directly to S3.
+ * 
+ * The returned thumbnailUrl is then included in the confirm request (Step 2)
+ * so it gets saved to the DB alongside the video metadata.
+ */
+router.post("/rooms/:roomId/videos/thumbnail-url", authenticateToken, mediaController.getVideoThumbnailUrl);
+
+/**
  * POST /api/rooms/:roomId/videos/confirm
  * Step 2 of video upload — client calls this after successfully uploading to S3
  * Saves the video metadata (title, fileUrl, etc.) to the DB

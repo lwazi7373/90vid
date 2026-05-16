@@ -307,6 +307,35 @@ const getVideoUploadUrl = async (roomId, userId, mimeType) => {
   return { uploadUrl, fileUrl };
 };
 
+/**
+ * Step 1.5 of the video upload flow.
+ * 
+ * Full video upload flow reminder:
+ *   Step 1 — Client calls /videos/presigned-url    -  gets a presigned URL to upload the video directly to S3
+ *   Step 1.5 — Client calls /videos/thumbnail-url  -  gets a presigned URL to upload the thumbnail frame directly to S3
+ *   Step 2 — Client calls /videos/confirm          -  saves video metadata (fileUrl + thumbnailUrl) to the DB
+ * 
+ * Why this exists:
+ * Videos never pass through our server, so we can't generate thumbnails server-side (unlike images where
+ * the buffer passes through multer and we use Sharp). The client extracts a frame using the Canvas API,
+ * then uses this presigned URL to upload that frame directly to S3 under videos/thumbnails/.
+ * The returned thumbnailUrl is what the client sends in the confirm step.
+ */
+const getVideoThumbnailUrl = async (roomId, userId) => {
+  const db = connectDB;
+  const room = await getRoomOrThrow(db, roomId);
+  const permission = await getRoomPermission(db, roomId, userId);
+
+  if (!hasAccess(room, permission, userId, "canUpload")) {
+    throw forbidden("You do not have permission to upload to this room");
+  }
+
+  // Thumbnail frames are always JPEG regardless of the video format
+  const { uploadUrl, fileUrl: thumbnailUrl } = await generatePresignedUrl("image/jpeg", "videos/thumbnails");
+  return { uploadUrl, thumbnailUrl };
+};
+
+
 const postVideo = async (roomId, userId, { title, description, fileUrl, thumbnailUrl, durationSeconds }) => {
   const db = connectDB;
   const room = await getRoomOrThrow(db, roomId);
@@ -364,5 +393,5 @@ const removeVideo = async (roomId, videoId, userId) => {
 
 module.exports = {
   getImages, getImage, postImage, removeImage,
-  getVideos, getVideo, getVideoUploadUrl, postVideo, removeVideo
+  getVideos, getVideo, getVideoUploadUrl, getVideoThumbnailUrl ,postVideo, removeVideo
 };

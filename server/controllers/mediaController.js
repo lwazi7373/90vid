@@ -78,6 +78,23 @@ const getVideoUploadUrl = async (req, res, next) => {
   }
 };
 
+/**
+ * Handles Step 1.5 of the video upload flow.
+ * No body fields needed — mimeType is always image/jpeg since
+ * the client always extracts the thumbnail frame as a JPEG.
+ */
+const getVideoThumbnailUrl = async (req, res, next) => {
+  try {
+    const { roomId } = req.params;
+    const userId = req.user.userId;
+
+    const { uploadUrl, thumbnailUrl } = await mediaService.getVideoThumbnailUrl(roomId, userId);
+    return res.status(200).json({ uploadUrl, thumbnailUrl });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const postVideo = async (req, res, next) => {
   try {
     //const { roomId } = req.params;
@@ -126,6 +143,6 @@ const removeVideo = async (req, res, next) => {
 module.exports = {
   getImages, getImage,
   getVideos, getVideo,
-  postImage, getVideoUploadUrl, postVideo,
+  postImage, getVideoUploadUrl, getVideoThumbnailUrl, postVideo,
   removeImage, removeVideo
 };

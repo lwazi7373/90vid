@@ -60,7 +60,9 @@ const generatePresignedUrl = async (mimeType, folder) => {
     ContentType: mimeType,
   });
 
+  // To Upload to location
   const uploadUrl = await getSignedUrl(s3, command, { expiresIn: 900 }); // 900s = 15 min
+  // Where its located
   const fileUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
 
   return { uploadUrl, fileUrl };
