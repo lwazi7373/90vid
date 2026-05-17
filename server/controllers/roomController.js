@@ -1,4 +1,5 @@
 const roomService = require("../services/roomService");
+const { badRequest } = require("../errors/httpErrors");
 
 const getRooms = async (req, res, next) => {
   try {
@@ -59,7 +60,9 @@ const updateRoom = async (req, res, next) => {
     const userId = req.user.userId;
     const { roomId } = req.params;
     const { roomName, description } = req.body;
-    const room = await roomService.updateRoom(roomId, userId, { roomName, description });
+
+    // req.file will be undefined if no image was sent — which is fine, service handles it
+    const room = await roomService.updateRoom(roomId, userId, { roomName, description, file: req.file });
     return res.status(200).json(room);
   } catch (error) {
     next(error);

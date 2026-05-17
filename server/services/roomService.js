@@ -1,10 +1,57 @@
 const connectDB = require("../db/Connect");
 const { badRequest, forbidden, notFound } = require("../errors/httpErrors");
-const { uploadToS3 } =  requird("../utils/s3Helpers");
+const { uploadToS3, deleteFromS3 } =  require("../utils/s3Helpers");
 
 const { getCache, setCache, deleteCache } = require("../cache/cacheService");
 const keys = require("../cache/cacheKeys");
 
+////////////////////////////////////////////////////////// Utility methods /////////////////////////////////////////////////////////////////////
+/**
+ * Get the room or throw not found error
+ * @param {connectDB} db 
+ * @param {number} roomId 
+ * @returns room
+ */
+const getRoomOrThrow = async (db, roomId) => {
+  const [[room]] = await db.execute(
+    `SELECT roomId, roomName, thumbnailUrl, createdBy FROM Rooms WHERE roomId = ?`,
+    [roomId]
+  );
+  if (!room) throw notFound(`Room ${roomId} not found`);
+  return room;
+};
+
+/**
+ * Checks to see if a user can upload and delete in/from this room 
+ * @param {connectDB} db 
+ * @param {Number} roomId 
+ * @param {Number} userId 
+ * @returns boolean 
+ */
+const getRoomPermission = async (db, roomId, userId) => {
+  const [[permission]] = await db.execute(
+    `SELECT canUpload, canDelete FROM RoomPermissions 
+     WHERE roomId = ? AND userId = ?`,
+    [roomId, userId]
+  );
+  return permission ?? null;
+};
+
+/**
+ * Assess the permission the user has
+ * @param {room} room 
+ * @param {boolean or null} permission 
+ * @param {Number} userId 
+ * @param {String} permissionKey 
+ * @returns boolean
+ */
+const hasAccess = (room, permission, userId, permissionKey) => {
+  if (room.createdBy === userId) return true;
+  if (permission && permission[permissionKey]) return true;
+  return false;
+};
+
+///////////////////////////////////////////////////////////////////// Rooms //////////////////////////////////////////////////////////////////////
 /**
  * Gets all the rooms available on the platform
  * Uses cache-aside pattern
@@ -34,6 +81,7 @@ const getRooms = async () => {
       r.roomId,
       r.roomName,
       r.description,
+      r.thumbnailUrl,
       r.createdAt,
       u.userId   AS creatorId,
       u.userName AS creatorName
@@ -81,6 +129,7 @@ const getRoom = async (roomId) => {
       r.roomId,
       r.roomName,
       r.description,
+      r.thumbnailUrl,
       r.createdAt,
       u.userId   AS creatorId,
       u.userName AS creatorName
@@ -133,6 +182,7 @@ const getMyRooms = async (userId) => {
       r.roomId,
       r.roomName,
       r.description,
+      r.thumbnailUrl,
       r.createdAt
      FROM Rooms r
      WHERE r.createdBy = ?
@@ -163,6 +213,7 @@ const getPermittedRooms = async (userId) => {
       r.roomId,
       r.roomName,
       r.description,
+      r.thumbnailUrl,
       r.createdAt,
       u.userId   AS creatorId,
       u.userName AS creatorName,
@@ -219,61 +270,43 @@ const createRoom = async (userId, roomName, description, file) => {
  * @param {String, String} param2 
  * @returns updatedRoom
  */
-const updateRoom = async (roomId, userId, { roomName, description }) => {
+const updateRoom = async (roomId, userId, { roomName, description, file }) => {
   const db = connectDB;
+  const room = await getRoomOrThrow(db, roomId);
 
-  // Check room exists
-  const [[room]] = await db.execute(
-    `SELECT roomId, createdBy FROM Rooms WHERE roomId = ?`,
-    [roomId]
-  );
-  if (!room) throw notFound(`Room ${roomId} not found`);
-
-  // Check permission — creator OR has canEditRoom
-  const isCreator = room.createdBy === userId;
-  if (!isCreator) {
-    const [[permission]] = await db.execute(
-      `SELECT canEditRoom FROM RoomPermissions WHERE roomId = ? AND userId = ?`,
-      [roomId, userId]
-    );
-    if (!permission || !permission.canEditRoom) {
-      throw forbidden("You do not have permission to edit this room");
-    }
+  // Check if user has permission to edit the room
+  const permission = await getRoomPermission(db, roomId, userId);
+  if (!hasAccess(room, permission, userId, "canEditRoom")) {
+    throw forbidden("You do not have permission to edit this room");
   }
 
-  // Only update fields that were actually sent
-  if (!roomName && !description) throw badRequest("Nothing to update");
+  // Only upload a new thumbnail if a file was actually sent
+  let thumbnailUrl = room.thumbnailUrl;
+  if (file) {
+    // Delete the old thumbnail from S3 before uploading the new one
+    if (room.thumbnailUrl) await deleteFromS3(room.thumbnailUrl);
+    thumbnailUrl = await uploadToS3(file.buffer, file.mimetype, "rooms/thumbnails");
+  }
 
-  // COALESCE(?, roomName) means "use the ? value if it's not null, otherwise keep the existing roomName
-  // This lets us send just { roomName: "New Name" } without touching the description, 
-  // or just { description: "New desc" } without touching the name
-  await db.execute(
-    `UPDATE Rooms 
-     SET 
-       roomName    = COALESCE(?, roomName),
-       description = COALESCE(?, description)
-     WHERE roomId  = ?`,
-    [roomName ?? null, description ?? null, roomId]
+  const [result] = await db.execute(
+    `UPDATE Rooms SET 
+      roomName = COALESCE(?, roomName),
+      description = COALESCE(?, description),
+      thumbnailUrl = ?
+     WHERE roomId = ?`,
+    [roomName ?? null, description ?? null, thumbnailUrl, roomId]
   );
 
   // Invalidate caches
   try {
-      await deleteCache(keys.room(roomId));
-      await deleteCache(keys.rooms.user(room.createdBy));
-      await deleteCache(keys.rooms.all());
-      await deleteCache(keys.user.profile(userId));
+    await deleteCache(keys.rooms.user(userId));
+    await deleteCache(keys.rooms.all());
+    await deleteCache(keys.user.profile(userId));
   } catch (err) {
-      console.error("Cache delete error (updateRoom):", err);
+    console.error("Cache delete error (updateRoom):", err);
   }
 
-  // Return the updated room
-  const [[updatedRoom]] = await db.execute(
-    `SELECT roomId, roomName, description, createdBy, createdAt 
-     FROM Rooms WHERE roomId = ?`,
-    [roomId]
-  );
-
-  return updatedRoom;
+  return { roomId, roomName, description, thumbnailUrl, updatedBy: userId };
 };
 
 /**

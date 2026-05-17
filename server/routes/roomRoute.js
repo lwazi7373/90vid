@@ -4,6 +4,8 @@ const router = express.Router();
 const roomController = require("../controllers/roomController");
 const authenticateToken = require("../middleware/authMiddleware");
 
+const { imageUpload, handleUploadError } = require("../middleware/uploadMiddleware");
+
 /**
  * GET /api/rooms
  * Get all the rooms available
@@ -16,8 +18,6 @@ router.get("/rooms", authenticateToken, roomController.getRooms);
  * A room has a thumbnail (Room-Card on the frontend) hence the image upload when creating it
  */
 router.post("/rooms", authenticateToken, imageUpload.single("image"), handleUploadError, roomController.createRoom);
-
-//router.post("/rooms/:roomId/images", authenticateToken, imageUpload.single("image"), handleUploadError, mediaController.postImage);
 
 /**
  * GET /api/rooms
@@ -38,10 +38,11 @@ router.get("/rooms/permitted", authenticateToken, roomController.getPermittedRoo
 router.get("/rooms/:roomId", authenticateToken, roomController.getRoom);
 
 /**
- * PUT /api/rooms/:roomId
- * Update room (if creator or has canEditRoom permission)
+ * PATCH /api/rooms/:roomId
+ * Update a room (creator or user with canEditRoom permission)
+ * Image is optional here — user may only be updating roomName or description
  */
-router.put("/rooms/:roomId", authenticateToken, roomController.updateRoom);
+router.patch("/rooms/:roomId", authenticateToken, imageUpload.single("image"), handleUploadError, roomController.updateRoom);
 
 /**
  * DELETE /api/rooms/:roomId
