@@ -3,6 +3,7 @@ export interface Room {
   roomId: number;
   roomName: string;
   description: string | null;
+  thumbnailUrl: string;
   createdAt: string;
   creatorId: number;
   creatorName: string;
@@ -12,6 +13,7 @@ export interface MyRoom {
   roomId: number;
   roomName: string;
   description: string | null;
+  thumbnailUrl: string;
   createdAt: string;
 }
 
@@ -19,6 +21,7 @@ export interface PermittedRoom {
   roomId: number;
   roomName: string;
   description: string | null;
+  thumbnailUrl: string;
   createdAt: string;
   creatorId: number;
   creatorName: string;
@@ -32,11 +35,13 @@ export interface PermittedRoom {
 export interface CreateRoomRequest {
   roomName: string;
   description?: string;
+  thumbnail: File; // room must have a background image
 }
 
 export interface UpdateRoomRequest {
   roomName?: string;
   description?: string;
+  thumbnail?: File; //  user may only be updating name or description
 }
 
 // ===================================================== RESPONSE TYPES ===========================================================
@@ -47,6 +52,7 @@ export interface CreateRoomResponse {
   roomName: string;
   description: string | null;
   createdBy: number;
+  thumbnailUrl: string;
 }
 
 // { roomId, roomName, description, createdBy, createdAt }
@@ -54,6 +60,7 @@ export interface UpdateRoomResponse {
   roomId: number;
   roomName: string;
   description: string | null;
+  thumbnailUrl: string;
   createdBy: number;
   createdAt: string;
 }

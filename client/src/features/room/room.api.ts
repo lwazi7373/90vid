@@ -34,12 +34,26 @@ export const roomApi = {
   },
 
   createRoom: async (data: CreateRoomRequest): Promise<CreateRoomResponse> => {
-    const response = await apiClient.post<CreateRoomResponse>("/rooms", data);
+    const formData = new FormData();
+    formData.append("roomName", data.roomName);
+    if (data.description) formData.append("description", data.description);
+    formData.append("image", data.thumbnail); // "image" must match imageUpload.single("image")
+
+    const response = await apiClient.post<CreateRoomResponse>("/rooms", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return response.data;
   },
 
   updateRoom: async (roomId: number, data: UpdateRoomRequest): Promise<UpdateRoomResponse> => {
-    const response = await apiClient.put<UpdateRoomResponse>(`/rooms/${roomId}`, data);
+    const formData = new FormData();
+    if (data.roomName) formData.append("roomName", data.roomName);
+    if (data.description) formData.append("description", data.description);
+    if (data.thumbnail) formData.append("image", data.thumbnail); // only append if sent
+
+    const response = await apiClient.patch<UpdateRoomResponse>(`/rooms/${roomId}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return response.data;
   },
 
