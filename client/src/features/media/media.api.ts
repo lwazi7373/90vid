@@ -5,16 +5,15 @@ import type {
   GetVideosResponse,
   GetVideoResponse,
   PostImageResponse,
-  GetPresignedUrlRequest,
-  GetPresignedUrlResponse,
+  GetPresignedVideoUploadUrlRequest,
+  GetPresignedVideoUploadUrlResponse,
+  GetPresignedVideoThumbnailUrlResponse,
   ConfirmVideoUploadRequest,
   ConfirmVideoUploadResponse,
   DeleteMediaResponse,
 } from "./media.types";
 
 export const mediaApi = {
-
-  // =========================================================== IMAGES ==================================================================
 
   getImages: async (roomId: number): Promise<GetImagesResponse> => {
     const response = await apiClient.get<GetImagesResponse>(`/rooms/${roomId}/images`);
@@ -43,7 +42,6 @@ export const mediaApi = {
     return response.data;
   },
 
-  // ========================================================== VIDEOS ===============================================================
 
   getVideos: async (roomId: number): Promise<GetVideosResponse> => {
     const response = await apiClient.get<GetVideosResponse>(`/rooms/${roomId}/videos`);
@@ -56,17 +54,37 @@ export const mediaApi = {
   },
 
   // Step 1 — get presigned URL from your API
-  getPresignedUrl: async (roomId: number, data: GetPresignedUrlRequest): Promise<GetPresignedUrlResponse> => {
-    const response = await apiClient.post<GetPresignedUrlResponse>(
+  // Will return the URL where we can upload to (uploadURL)
+  getPresignedVideoUrl: async (roomId: number, data: GetPresignedVideoUploadUrlRequest): Promise<GetPresignedVideoUploadUrlResponse> => {
+    const response = await apiClient.post<GetPresignedVideoUploadUrlResponse>(
       `/rooms/${roomId}/videos/presigned-url`,
       data
     );
     return response.data;
   },
 
+  // Step 1.5a — get presigned URL for the thumbnail frame
+  getPresignedThumbnailUrl: async (roomId: number): Promise<GetPresignedVideoThumbnailUrlResponse> => {
+    const response = await apiClient.post<GetPresignedVideoThumbnailUrlResponse>(
+      `/rooms/${roomId}/videos/thumbnail-url`
+    );
+    return response.data;
+  },
+
+  // Step 1.5b — upload the thumbnail frame directly to S3 using the presigned URL
+  // When the client extracts a frame from the video using the Canvas API, it produces a Blob, not a File object.
+  uploadThumbnailToS3: async (uploadUrl: string, thumbnailBlob: Blob): Promise<void> => {
+    await fetch(uploadUrl, {
+      method: "PUT",
+      body: thumbnailBlob,
+      headers: { "Content-Type": "image/jpeg" },
+    });
+  },
+
   // Step 2a — upload video file directly to S3 using the presigned URL
-  // This goes directly to S3, NOT through your API — so no apiClient here
+  // This goes directly to S3, NOT through the API — so no apiClient here
   uploadVideoToS3: async (uploadUrl: string, file: File): Promise<void> => {
+    // This is where we use that URL we got from AWS, to upload to 
     await fetch(uploadUrl, {
       method: "PUT",
       body: file,

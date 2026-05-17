@@ -3,6 +3,7 @@
 export interface Image {
   imageId: number;
   fileUrl: string;
+  thumbnailUrl: string | null;
   createdAt: string;
   uploadedById: number;
   uploadedByName: string;
@@ -24,7 +25,7 @@ export interface Video {
 
 // Image upload is handled by multer — no request type needed, it's a FormData file
 
-export interface GetPresignedUrlRequest {
+export interface GetPresignedVideoUploadUrlRequest {
   mimeType: string;
 }
 
@@ -62,14 +63,21 @@ export interface GetVideoResponse extends Video {}
 export interface PostImageResponse {
   imageId: number;
   fileUrl: string;
+  thumbnailUrl: string;
   roomId: number;
   uploadedBy: number;
 }
 
 // POST /videos/presigned-url response
-export interface GetPresignedUrlResponse {
+export interface GetPresignedVideoUploadUrlResponse {
   uploadUrl: string;
   fileUrl: string;
+}
+
+// POST /videos/thumbnail-url
+export interface GetPresignedVideoThumbnailUrlResponse {
+   uploadUrl: string;
+   thumbnailUrl: string;
 }
 
 // POST /videos/confirm response
