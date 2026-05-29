@@ -84,7 +84,9 @@ const getRooms = async () => {
       r.thumbnailUrl,
       r.createdAt,
       u.userId   AS creatorId,
-      u.userName AS creatorName
+      u.userName AS creatorName,
+      (SELECT COUNT(*) FROM Images WHERE roomId = r.roomId) AS imageCount,
+      (SELECT COUNT(*) FROM Videos WHERE roomId = r.roomId) AS videoCount
      FROM Rooms r
      JOIN Users u ON u.userId = r.createdBy
      ORDER BY r.createdAt DESC`
@@ -132,7 +134,9 @@ const getRoom = async (roomId) => {
       r.thumbnailUrl,
       r.createdAt,
       u.userId   AS creatorId,
-      u.userName AS creatorName
+      u.userName AS creatorName,
+      (SELECT COUNT(*) FROM Images WHERE roomId = r.roomId) AS imageCount,
+      (SELECT COUNT(*) FROM Videos WHERE roomId = r.roomId) AS videoCount      
      FROM Rooms r
      JOIN Users u ON u.userId = r.createdBy
      WHERE r.roomId = ?`,
@@ -183,7 +187,9 @@ const getMyRooms = async (userId) => {
       r.roomName,
       r.description,
       r.thumbnailUrl,
-      r.createdAt
+      r.createdAt,
+      (SELECT COUNT(*) FROM Images WHERE roomId = r.roomId) AS imageCount,
+      (SELECT COUNT(*) FROM Videos WHERE roomId = r.roomId) AS videoCount
      FROM Rooms r
      WHERE r.createdBy = ?
      ORDER BY r.createdAt DESC`,
@@ -219,7 +225,9 @@ const getPermittedRooms = async (userId) => {
       u.userName AS creatorName,
       rp.canUpload,
       rp.canDelete,
-      rp.canEditRoom
+      rp.canEditRoom,
+      (SELECT COUNT(*) FROM Images WHERE roomId = r.roomId) AS imageCount,
+      (SELECT COUNT(*) FROM Videos WHERE roomId = r.roomId) AS videoCount      
      FROM RoomPermissions rp
      JOIN Rooms r  ON r.roomId  = rp.roomId
      JOIN Users u  ON u.userId  = r.createdBy
