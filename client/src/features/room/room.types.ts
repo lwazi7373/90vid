@@ -7,6 +7,8 @@ export interface Room {
   createdAt: string;
   creatorId: number;
   creatorName: string;
+  imageCount: number;
+  videoCount: number;
 }
 
 export interface MyRoom {
@@ -15,6 +17,8 @@ export interface MyRoom {
   description: string | null;
   thumbnailUrl: string;
   createdAt: string;
+  imageCount: number;
+  videoCount: number;
 }
 
 export interface PermittedRoom {
@@ -28,6 +32,8 @@ export interface PermittedRoom {
   canUpload: number;   
   canDelete: number;   
   canEditRoom: number; 
+  imageCount: number;
+  videoCount: number;  
 }
 
 // ===================================================== REQUEST TYPES ===========================================================
