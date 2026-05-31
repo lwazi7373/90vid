@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { ConfirmModal } from "../../permission/components/ConfirmModal";
+import { ImageViewer } from "./ImageViewer";
 import { useGetImages } from "../media.queries";
 import { useRemoveImage } from "../media.mutations";
 import type { Image } from "../media.types";
@@ -13,6 +14,7 @@ export const ImageGrid = ({ roomId }: ImageGridProps) => {
   const { data, isLoading, isError } = useGetImages(roomId);
   const { mutateAsync: removeImage, isPending } = useRemoveImage(roomId);
   const [targetImage, setTargetImage] = useState<Image | null>(null);
+  const [viewingImage, setViewingImage] = useState<Image | null>(null);
 
   const handleConfirmDelete = async () => {
     if (!targetImage) return;
@@ -27,10 +29,7 @@ export const ImageGrid = ({ roomId }: ImageGridProps) => {
         style={{ gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gridAutoRows: "200px" }}
       >
         {Array.from({ length: 6 }).map((_, i) => (
-          <div
-            key={i}
-            className={`rounded-xl bg-[#1E1F25] animate-pulse ${i % 3 === 2 ? "row-span-2" : ""}`}
-          />
+          <div key={i} className={`rounded-xl bg-[#1E1F25] animate-pulse ${i % 3 === 2 ? "row-span-2" : ""}`} />
         ))}
       </div>
     );
@@ -61,7 +60,8 @@ export const ImageGrid = ({ roomId }: ImageGridProps) => {
         {data.results.map((image, i) => (
           <div
             key={image.imageId}
-            className={`group relative overflow-hidden rounded-xl bg-[#292a2f] ${i % 3 === 2 ? "row-span-2" : ""}`}
+            onClick={() => setViewingImage(image)}
+            className={`group relative overflow-hidden rounded-xl bg-[#292a2f] cursor-pointer ${i % 3 === 2 ? "row-span-2" : ""}`}
           >
             <img
               src={image.thumbnailUrl ?? image.fileUrl}
@@ -73,7 +73,7 @@ export const ImageGrid = ({ roomId }: ImageGridProps) => {
             <div className="absolute inset-0 bg-[#0d0e13]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
               {/* Delete button */}
               <button
-                onClick={() => setTargetImage(image)}
+                onClick={(e) => { e.stopPropagation(); setTargetImage(image); }}
                 className="absolute top-4 right-4 p-2 bg-[#ffb4ab]/20 text-[#ffb4ab] hover:bg-[#ffb4ab]/30 rounded-lg backdrop-blur-md transition-colors"
               >
                 <Trash2 size={18} />
@@ -92,6 +92,12 @@ export const ImageGrid = ({ roomId }: ImageGridProps) => {
           </div>
         ))}
       </div>
+
+      {/* Image viewer */}
+      <ImageViewer
+        image={viewingImage}
+        onClose={() => setViewingImage(null)}
+      />
 
       {/* Delete confirmation */}
       <ConfirmModal

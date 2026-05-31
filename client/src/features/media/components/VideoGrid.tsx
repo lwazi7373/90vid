@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Play, Trash2 } from "lucide-react";
 import { ConfirmModal } from "../../permission/components/ConfirmModal";
+import { VideoViewer } from "./VideoViewer";
 import { useGetVideos } from "../media.queries";
 import { useRemoveVideo } from "../media.mutations";
 import type { Video } from "../media.types";
@@ -28,6 +29,7 @@ export const VideoGrid = ({ roomId }: VideoGridProps) => {
   const { data, isLoading, isError } = useGetVideos(roomId);
   const { mutateAsync: removeVideo, isPending } = useRemoveVideo(roomId);
   const [targetVideo, setTargetVideo] = useState<Video | null>(null);
+  const [viewingVideo, setViewingVideo] = useState<Video | null>(null);
 
   const handleConfirmDelete = async () => {
     if (!targetVideo) return;
@@ -67,7 +69,8 @@ export const VideoGrid = ({ roomId }: VideoGridProps) => {
         {data.results.map((video) => (
           <div
             key={video.videoId}
-            className="group relative flex flex-col bg-[#1E1F25] rounded-xl overflow-hidden border border-[#424753]/5 transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
+            onClick={() => setViewingVideo(video)}
+            className="group relative flex flex-col bg-[#1E1F25] rounded-xl overflow-hidden border border-[#424753]/5 transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] cursor-pointer"
           >
             {/* Thumbnail */}
             <div className="relative aspect-video overflow-hidden">
@@ -98,9 +101,9 @@ export const VideoGrid = ({ roomId }: VideoGridProps) => {
                 </div>
               </div>
 
-              {/* Delete button — appears on hover */}
+              {/* Delete button */}
               <button
-                onClick={() => setTargetVideo(video)}
+                onClick={(e) => { e.stopPropagation(); setTargetVideo(video); }}
                 className="absolute top-3 right-3 p-2 bg-[#ffb4ab]/90 hover:bg-[#ffb4ab] text-[#690005] rounded-lg shadow-lg z-10 opacity-0 group-hover:opacity-100 transition-all duration-200 -translate-y-1 group-hover:translate-y-0"
               >
                 <Trash2 size={16} />
@@ -123,6 +126,12 @@ export const VideoGrid = ({ roomId }: VideoGridProps) => {
           </div>
         ))}
       </div>
+
+      {/* Video viewer */}
+      <VideoViewer
+        video={viewingVideo}
+        onClose={() => setViewingVideo(null)}
+      />
 
       {/* Delete confirmation */}
       <ConfirmModal
