@@ -21,7 +21,7 @@ const LoginPage = () => {
     setInlineError(null);
     try {
       await login({ userName, userPassword });
-      navigate('/dashboard');
+      navigate('/rooms');
     } catch (error: any) {
       setInlineError(error.userMessage ?? 'Login failed. Please try again.');
     }
