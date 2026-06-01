@@ -15,14 +15,11 @@ function AppRoutes() {
         <Route path="/register" element={<RegisterPage />} />
         {/* User Routes */}
         <Route path="/profile" element={<UserProfile />} />
-        {/* Search Routes */}
         {/* Room Routes */}
         <Route path="/rooms" element={<AllRooms />} />
         <Route path="/rooms/mine" element={<UsersRooms />} />
         <Route path="/rooms/permitted" element={<PermittedRooms />} />
         <Route path="/rooms/:roomId" element={<RoomView />} />
-        {/* Media Routes */}
-        {/* Permission Routes */}
         </Routes>
     );
 }
