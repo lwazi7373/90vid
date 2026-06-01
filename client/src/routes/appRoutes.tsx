@@ -5,6 +5,7 @@ import { AllRooms } from "../features/room/pages/AllRooms";
 import { UsersRooms } from "../features/room/pages/UsersRooms";
 import { PermittedRooms } from "../features/room/pages/PermittedRooms";
 import { RoomView } from "../features/room/pages/RoomView";
+import { UserProfile } from "../features/auth/pages/UserProfile";
 
 function AppRoutes() {
     return(
@@ -13,6 +14,7 @@ function AppRoutes() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         {/* User Routes */}
+        <Route path="/profile" element={<UserProfile />} />
         {/* Search Routes */}
         {/* Room Routes */}
         <Route path="/rooms" element={<AllRooms />} />
