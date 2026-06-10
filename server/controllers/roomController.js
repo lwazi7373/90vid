@@ -1,6 +1,10 @@
 const roomService = require("../services/roomService");
 const { badRequest } = require("../errors/httpErrors");
 
+/**
+ * Controller to get all the rooms in the system
+ * @returns the rooms and the count
+ */
 const getRooms = async (req, res, next) => {
   try {
     const rooms = await roomService.getRooms();
@@ -10,6 +14,10 @@ const getRooms = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to get a specific room
+ * @returns the room
+ */
 const getRoom = async (req, res, next) => {
   try {
     const { roomId } = req.params; 
@@ -20,6 +28,10 @@ const getRoom = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to return all the rooms the logged in user has created
+ * @returns the rooms and the count
+ */
 const getMyRooms = async (req, res, next) => {
   try {
     const userId = req.user.userId;
@@ -30,6 +42,10 @@ const getMyRooms = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to get all the rooms the user has been granted permission for 
+ * @returns the rooms and the count
+ */
 const getPermittedRooms = async (req, res, next) => {
   try {
     const userId = req.user.userId;
@@ -40,6 +56,11 @@ const getPermittedRooms = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to allow a user to create a room
+ * Image must be provided, to use as a thumbnail for the "room card" display
+ * @returns created room
+ */
 const createRoom = async (req, res, next) => {
   try {
     const userId = req.user.userId;
@@ -55,6 +76,11 @@ const createRoom = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to update a specfic room (must ber creator or have permission)
+ * Image, does not need to provided, the option to is available
+ * @returns updated room
+ */
 const updateRoom = async (req, res, next) => {
   try {
     const userId = req.user.userId;
@@ -69,6 +95,10 @@ const updateRoom = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to delete room (if creator)
+ * @returns success message
+ */
 const deleteRoom = async (req, res, next) => {
   try {
     const userId = req.user.userId;
