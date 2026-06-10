@@ -2,14 +2,13 @@ const connectDB = require("../db/Connect"); // Database connection
 const bcrypt = require("bcrypt"); // decrypt passwords
 const {forbidden, notFound } = require("../errors/httpErrors");
 const {getCache, setCache, deleteCache, increment, setExpiry} = require("../cache/cacheService");
-
 const keys = require("../cache/cacheKeys");
 
-const MAX_ATTEMPTS = 5;
+const MAX_ATTEMPTS = 5; // Maximum number of times user can try to login
 const WINDOW_SECONDS = 900; // 15 minutes
 
 /**
- * Service to register a user to the database
+ * Service to register the user 
  * @param {String} userName
  * @param {String} userPassword
  * @param {String} emailAddress
@@ -72,7 +71,7 @@ const handleFailedAttempt = async (attemptKey) => {
 
 /**
  * Service to login user 
- * Authenticates a user with rate limiting
+ * Authenticates a user with rate limiting, via redis
  * @param {String} userName
  * @param {String} userPassword
  * @returns {Promise<Object>} user object
@@ -82,17 +81,19 @@ const loginUser = async (userName, userPassword) => {
 
   const attemptKey = keys.login.attempts(userName);
 
-  // 1. Check current failed attempts
+  // Check current failed attempts
   let attempts = 0;
 
   try {
+    // Get the number of attempts from cache
     const cachedAttempts = await getCache(attemptKey);
+    // Assign theem to attempts variable
     attempts = cachedAttempts ? Number(cachedAttempts) : 0;
   } catch (err) {
     console.error("Cache error (login attempts):", err);
   }
 
-  // 2. Block if too many attempts
+  // If attempts is greater equal to 5 then block user from trying again
   if (attempts >= MAX_ATTEMPTS) {
     throw forbidden("Too many login attempts. Try again later.");
   }
@@ -114,22 +115,23 @@ const loginUser = async (userName, userPassword) => {
     throw forbidden("Account is inactive");
   }
 
-  // 4. Compare password
+  // Compare password
   const isMatch = await bcrypt.compare(userPassword, user.userPassword);
 
   if (!isMatch) {
+    // Still count attempt (important for security)
     await handleFailedAttempt(attemptKey);
     throw notFound("Invalid credentials");
   }
 
-  // 5. SUCCESS → reset attempts
+  // When successful then reset attempts by removing the attemptKey cache (attempt count)
   try {
     await deleteCache(attemptKey);
   } catch (err) {
     console.error("Cache delete error (login success):", err);
   }
 
-  // 6. Return user
+  // Return user
   return {
     userId: user.userId,
     userName: user.userName,

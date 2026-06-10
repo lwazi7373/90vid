@@ -8,7 +8,7 @@ const authenticateToken = (req, res, next) => {
     // split "Bearer" "TOKEN" and assign "TOKEN"
     const token = authHeader && authHeader.split(" ")[1]; // [1] second element which is "TOKEN"
     
-    //Check is token exists
+    //Check if the token exists
     if (!token) {
       return next(unauthorized("No authentication token provided"));
     }

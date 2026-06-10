@@ -7,7 +7,7 @@ const authService = require("../services/authService");
  * Controller to register the user to the system
  * @param {*} req
  * @param {*} res
- * @returns
+ * @returns successsful message and the new user's Id
  */
 const register = async (req, res) => {
   const { userName, userPassword, emailAddress, contactNo, isActive } = req.body;
@@ -41,6 +41,7 @@ const login = async (req, res) => {
   const { userName, userPassword } = req.body;
   const user = await authService.loginUser(userName, userPassword); 
 
+  // Check for all required credentials
   if (!userName || !userPassword) throw badRequest("Missing credentials");
 
   // Create token
