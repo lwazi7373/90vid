@@ -1,6 +1,10 @@
 const mediaService = require("../services/mediaService");
 const { badRequest } = require("../errors/httpErrors");
 
+/**
+ * Controller to get images in a room 
+ * @returns images and count
+ */
 const getImages = async (req, res, next) => {
   try {
     const { roomId } = req.params;
@@ -11,6 +15,10 @@ const getImages = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to get a particular image
+ * @returns image
+ */
 const getImage = async (req, res, next) => {
   try {
     const { roomId, imageId } = req.params;
@@ -21,6 +29,10 @@ const getImage = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to get videos in a room 
+ * @returns videos and count
+ */
 const getVideos = async (req, res, next) => {
   try {
     const { roomId } = req.params;
@@ -31,6 +43,10 @@ const getVideos = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to get a particular video
+ * @returns video
+ */
 const getVideo = async (req, res, next) => {
   try {
     const { roomId, videoId } = req.params;
@@ -41,9 +57,12 @@ const getVideo = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to upload an image to a room
+ * @returns uploaded image
+ */
 const postImage = async (req, res, next) => {
   try {
-    //const { roomId } = req.params;
     const roomId = parseInt(req.params.roomId);
     const userId = req.user.userId;
 
@@ -58,6 +77,11 @@ const postImage = async (req, res, next) => {
   }
 };
 
+/**
+ * Handles Step 1 of the video upload flow.
+ * Controller sends mimeType as a request for an upload video url to AWS
+ * @returns uploadUrl (for video) + fileUrl (location)
+ */
 const getVideoUploadUrl = async (req, res, next) => {
   try {
     const { roomId } = req.params;
@@ -82,6 +106,7 @@ const getVideoUploadUrl = async (req, res, next) => {
  * Handles Step 1.5 of the video upload flow.
  * No body fields needed — mimeType is always image/jpeg since
  * the client always extracts the thumbnail frame as a JPEG.
+ * @returns uploadUrl (for thumbnail) + thumbnailUrl (location)
  */
 const getVideoThumbnailUrl = async (req, res, next) => {
   try {
@@ -95,9 +120,12 @@ const getVideoThumbnailUrl = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to post video information to database - Final step on the upload video process 
+ * @returns posted video
+ */
 const postVideo = async (req, res, next) => {
   try {
-    //const { roomId } = req.params;
     const roomId = parseInt(req.params.roomId);
     const userId = req.user.userId;
     const { title, fileUrl, description, thumbnailUrl, durationSeconds } = req.body;
@@ -118,6 +146,10 @@ const postVideo = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to delete an image from a room 
+ * @returns success message
+ */
 const removeImage = async (req, res, next) => {
   try {
     const { roomId, imageId } = req.params;
@@ -129,6 +161,10 @@ const removeImage = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to delete a video from a room 
+ * @returns success message
+ */
 const removeVideo = async (req, res, next) => {
   try {
     const { roomId, videoId } = req.params;
