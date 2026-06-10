@@ -1,6 +1,10 @@
 const permissionService = require("../services/permissionService");
 const { badRequest } = require("../errors/httpErrors");
 
+/**
+ * Controller to fetch the user's with permissions for a perticular room
+ * @returns the users and the count 
+ */
 const permittedUsers = async (req, res, next) => {
   try {
     const { roomId } = req.params;
@@ -12,6 +16,11 @@ const permittedUsers = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to grant permissions to a user for a particular room
+ * Can only grant permissions, if the user granting is the creator of the room
+ * @returns permission information
+ */
 const permitUser = async (req, res, next) => {
   try {
     const roomId = parseInt(req.params.roomId);
@@ -33,6 +42,11 @@ const permitUser = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller to revoke a user's permissions to a room
+ * Can only be done by the creator
+ * @returns success message
+ */
 const revokeUser = async (req, res, next) => {
   try {
     const { roomId, userId } = req.params;
