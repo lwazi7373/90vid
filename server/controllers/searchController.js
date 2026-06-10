@@ -10,10 +10,10 @@ const {notFound} = require("../errors/httpErrors");
  * @returns the room(s)
  */
 const searchRoom = async (req, res) => {
-    const { roomName } = req.query;
+    const { roomName } = req.query; // query param
     if (!roomName || roomName.trim() === "") throw notFound("Query param 'roomName' is required.");
     
-    const rooms = await searchService.searchRooms(roomName.trim());
+    const rooms = await searchService.searchRooms(roomName.trim()); 
     res.status(200).json({ results: rooms, count: rooms.length });
 }
 
@@ -26,7 +26,7 @@ const searchRoom = async (req, res) => {
  * @returns the user(s)
  */
 const searchUser = async (req, res) => {
-    const { userName } = req.query;
+    const { userName } = req.query; // query param
     if (!userName || userName.trim() === "") throw notFound("Query param 'userName' is required.");
 
     const users = await searchService.searchUsers(userName.trim());
