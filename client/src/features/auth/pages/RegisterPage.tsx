@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Eye, EyeOff, User, Lock, Mail, Phone } from 'lucide-react';
+import { Eye, EyeOff, User, Lock, Mail, Phone, ArrowRight, Loader2 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -12,7 +12,6 @@ const RegisterPage = () => {
   const [emailAddress, setEmailAddress] = useState('');
   const [contactNo, setContactNo] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [focusedField, setFocusedField] = useState<string | null>(null);
   const [inlineError, setInlineError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
@@ -27,187 +26,166 @@ const RegisterPage = () => {
     }
   };
 
-  const colors = {
-    phantom: '#ebebef',
-    eclipse: '#d3d2d0',
-    umbra: '#606260',
-    midnight: '#2c2d2d',
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleSubmit();
   };
 
-  const neumorphicShadow = {
-    light: '#ffffff',
-    dark: '#a3a3a3',
-  };
-
-  const inputClass = `w-full bg-transparent outline-none text-sm font-medium transition-colors duration-300`;
-
-  const getContainerStyle = (fieldName: string) => ({
-    backgroundColor: colors.phantom,
-    boxShadow: focusedField === fieldName
-      ? `inset 8px 8px 16px ${neumorphicShadow.dark}, inset -8px -8px 16px ${neumorphicShadow.light}`
-      : `8px 8px 16px ${neumorphicShadow.dark}, -8px -8px 16px ${neumorphicShadow.light}`,
-  });
-
-  const containerClass = `flex items-center px-6 py-4 rounded-2xl transition-all duration-300`;
-
-  const fields = [
-    {
-      name: 'username',
-      icon: <User size={20} style={{ color: colors.umbra, marginRight: '12px' }} />,
-      type: 'text',
-      placeholder: 'Username',
-      value: userName,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) => setUserName(e.target.value),
-    },
-    {
-      name: 'email',
-      icon: <Mail size={20} style={{ color: colors.umbra, marginRight: '12px' }} />,
-      type: 'email',
-      placeholder: 'Email Address',
-      value: emailAddress,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) => setEmailAddress(e.target.value),
-    },
-    {
-      name: 'contact',
-      icon: <Phone size={20} style={{ color: colors.umbra, marginRight: '12px' }} />,
-      type: 'tel',
-      placeholder: 'Contact Number',
-      value: contactNo,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) => setContactNo(e.target.value),
-    },
-  ];
+  const canSubmit = userName.trim() && userPassword.trim() && emailAddress.trim() && !isRegisterPending;
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center p-4"
-      style={{ backgroundColor: colors.phantom }}
-    >
-      <div
-        className="w-full max-w-md p-8 rounded-3xl"
-        style={{
-          backgroundColor: colors.phantom,
-          boxShadow: `20px 20px 60px ${neumorphicShadow.dark}, -20px -20px 60px ${neumorphicShadow.light}`,
-        }}
-      >
-        {/* Header */}
-        <div className="mb-10 text-center">
-          <h1
-            className="text-3xl font-bold mb-2 tracking-wide"
-            style={{ color: colors.midnight }}
-          >
-            Create Account
-          </h1>
-          <p className="text-sm" style={{ color: colors.umbra }}>
-            Register your details below
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#0d0e13] flex items-center justify-center p-4">
+      {/* Background glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#4F8EF7]/5 rounded-full blur-3xl" />
+      </div>
 
-        {/* Inline Error */}
-        {inlineError && (
-          <div
-            className="mb-6 px-5 py-3 rounded-2xl text-sm font-medium text-center"
-            style={{
-              backgroundColor: colors.phantom,
-              color: '#c0392b',
-              boxShadow: `inset 4px 4px 8px ${neumorphicShadow.dark}, inset -4px -4px 8px ${neumorphicShadow.light}`,
-            }}
-          >
-            {inlineError}
+      <div className="relative w-full max-w-md">
+        {/* Card */}
+        <div className="bg-[#1A1B21] rounded-2xl border border-[#424753]/20 shadow-[0_32px_64px_rgba(0,0,0,0.6)] p-8">
+
+          {/* Header */}
+          <div className="mb-10 text-center">
+            <h1 className="font-['Manrope'] text-3xl font-extrabold tracking-tight text-[#e3e1e9] mb-2">
+              Create Account
+            </h1>
+            <p className="text-sm text-[#9497a1]">
+              Register your details to access the vault
+            </p>
           </div>
-        )}
 
-        <div className="space-y-6">
-          {/* Text Fields */}
-          {fields.map((field) => (
-            <div key={field.name} className="relative">
-              <div
-                className={containerClass}
-                style={getContainerStyle(field.name)}
-              >
-                {field.icon}
+          {/* Error */}
+          {inlineError && (
+            <div className="mb-6 px-4 py-3 rounded-xl bg-[#ffb4ab]/10 border border-[#ffb4ab]/20 text-sm font-medium text-[#ffb4ab] text-center">
+              {inlineError}
+            </div>
+          )}
+
+          <div className="space-y-4">
+            {/* Username */}
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#4F8EF7]">
+                Username
+              </label>
+              <div className="relative">
+                <User size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9497a1] pointer-events-none" />
                 <input
-                  type={field.type}
-                  placeholder={field.placeholder}
-                  value={field.value}
-                  onChange={field.onChange}
-                  onFocus={() => setFocusedField(field.name)}
-                  onBlur={() => setFocusedField(null)}
-                  className={inputClass}
-                  style={{ color: colors.midnight }}
+                  type="text"
+                  placeholder="e.g. TonyStart"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   disabled={isRegisterPending}
+                  className="w-full bg-[#0d0e13] border border-[#424753]/30 rounded-xl px-4 py-3 pl-9 text-sm text-[#e3e1e9] placeholder:text-[#9497a1]/50 focus:outline-none focus:border-[#4F8EF7]/50 focus:ring-1 focus:ring-[#4F8EF7]/20 transition-all disabled:opacity-50"
                 />
               </div>
             </div>
-          ))}
 
-          {/* Password Field */}
-          <div className="relative">
-            <div
-              className={containerClass}
-              style={getContainerStyle('password')}
-            >
-              <Lock size={20} style={{ color: colors.umbra, marginRight: '12px' }} />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Password"
-                value={userPassword}
-                onChange={(e) => setUserPassword(e.target.value)}
-                onFocus={() => setFocusedField('password')}
-                onBlur={() => setFocusedField(null)}
-                className={inputClass}
-                style={{ color: colors.midnight }}
-                disabled={isRegisterPending}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="ml-2 focus:outline-none transition-transform duration-200 hover:scale-110"
-                style={{ color: colors.umbra }}
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
+            {/* Email */}
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#4F8EF7]">
+                Email Address
+              </label>
+              <div className="relative">
+                <Mail size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9497a1] pointer-events-none" />
+                <input
+                  type="email"
+                  placeholder="e.g. tony@vault.com"
+                  value={emailAddress}
+                  onChange={(e) => setEmailAddress(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  disabled={isRegisterPending}
+                  className="w-full bg-[#0d0e13] border border-[#424753]/30 rounded-xl px-4 py-3 pl-9 text-sm text-[#e3e1e9] placeholder:text-[#9497a1]/50 focus:outline-none focus:border-[#4F8EF7]/50 focus:ring-1 focus:ring-[#4F8EF7]/20 transition-all disabled:opacity-50"
+                />
+              </div>
             </div>
+
+            {/* Contact — optional */}
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#4F8EF7]">
+                Contact Number{" "}
+                <span className="text-[#9497a1] normal-case tracking-normal font-normal">
+                  (optional)
+                </span>
+              </label>
+              <div className="relative">
+                <Phone size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9497a1] pointer-events-none" />
+                <input
+                  type="tel"
+                  placeholder="e.g. +27 82 000 0000"
+                  value={contactNo}
+                  onChange={(e) => setContactNo(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  disabled={isRegisterPending}
+                  className="w-full bg-[#0d0e13] border border-[#424753]/30 rounded-xl px-4 py-3 pl-9 text-sm text-[#e3e1e9] placeholder:text-[#9497a1]/50 focus:outline-none focus:border-[#4F8EF7]/50 focus:ring-1 focus:ring-[#4F8EF7]/20 transition-all disabled:opacity-50"
+                />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#4F8EF7]">
+                Password
+              </label>
+              <div className="relative">
+                <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9497a1] pointer-events-none" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  value={userPassword}
+                  onChange={(e) => setUserPassword(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  disabled={isRegisterPending}
+                  className="w-full bg-[#0d0e13] border border-[#424753]/30 rounded-xl px-4 py-3 pl-9 pr-10 text-sm text-[#e3e1e9] placeholder:text-[#9497a1]/50 focus:outline-none focus:border-[#4F8EF7]/50 focus:ring-1 focus:ring-[#4F8EF7]/20 transition-all disabled:opacity-50"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9497a1] hover:text-[#e3e1e9] transition-colors"
+                >
+                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit */}
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={!canSubmit}
+              className="w-full mt-4 py-3 rounded-xl font-bold text-sm bg-[#4F8EF7] text-white hover:bg-[#6ba3f9] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+            >
+              {isRegisterPending ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" />
+                  Creating Account...
+                </>
+              ) : (
+                <>
+                  Register Account
+                  <ArrowRight size={16} />
+                </>
+              )}
+            </button>
           </div>
 
-          {/* Submit Button */}
-          <button
-            type="button"
-            onClick={handleSubmit}
-            disabled={isRegisterPending}
-            className="w-full py-4 rounded-2xl font-semibold text-sm tracking-wide transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] mt-8 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
-            style={{
-              backgroundColor: colors.phantom,
-              color: colors.midnight,
-              boxShadow: `6px 6px 12px ${neumorphicShadow.dark}, -6px -6px 12px ${neumorphicShadow.light}`,
-            }}
-            onMouseDown={(e) => {
-              if (!isRegisterPending)
-                e.currentTarget.style.boxShadow = `inset 6px 6px 12px ${neumorphicShadow.dark}, inset -6px -6px 12px ${neumorphicShadow.light}`;
-            }}
-            onMouseUp={(e) => {
-              e.currentTarget.style.boxShadow = `6px 6px 12px ${neumorphicShadow.dark}, -6px -6px 12px ${neumorphicShadow.light}`;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = `6px 6px 12px ${neumorphicShadow.dark}, -6px -6px 12px ${neumorphicShadow.light}`;
-            }}
-          >
-            {isRegisterPending ? 'Creating Account...' : 'Register Account'}
-          </button>
+          {/* Login link */}
+          <div className="mt-8 text-center">
+            <p className="text-sm text-[#9497a1]">
+              Already have an account?{' '}
+              <Link
+                to="/login"
+                className="font-semibold text-[#acc7ff] hover:text-[#4F8EF7] transition-colors"
+              >
+                Sign In
+              </Link>
+            </p>
+          </div>
         </div>
 
-        {/* Login Link */}
-        <div className="mt-8 text-center">
-          <p className="text-sm" style={{ color: colors.umbra }}>
-            Already have an account?{' '}
-            <Link
-              to="/login"
-              className="font-semibold hover:underline transition-all"
-              style={{ color: colors.midnight }}
-            >
-              Sign In
-            </Link>
-          </p>
-        </div>
+        {/* Bottom label */}
+        <p className="text-center text-[10px] uppercase tracking-[0.2em] text-[#424753] font-bold mt-6">
+          Digital Curator · Encrypted Archive
+        </p>
       </div>
     </div>
   );
