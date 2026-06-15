@@ -14,29 +14,37 @@ import { useDeleteRoom } from "../room.mutations";
 import { useAuth } from "../../../features/auth/context/AuthContext";
 
 type Tab = "images" | "videos";
-
+ 
 export const RoomView = () => {
   const { roomId: roomIdParam } = useParams<{ roomId: string }>();
   const roomId = Number(roomIdParam);
   const navigate = useNavigate();
   const { user } = useAuth();
-
+ 
   const [activeTab, setActiveTab] = useState<Tab>("images");
   const [isPermissionsOpen, setIsPermissionsOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
+ 
   const { data: roomData, isLoading, isError } = useGetRoom(roomId);
   const { mutateAsync: deleteRoom, isPending: isDeleting } = useDeleteRoom();
-
+ 
   const isCreator = !!user && !!roomData && user.userId === roomData.creatorId;
-
+ 
+  // Check if user has been granted permission to this room
+  const isPermitted = !!user && user.rooms.permitted.some(
+    (p) => p.roomId === roomId
+  );
+ 
+  // Can upload if they are the creator OR a permitted user
+  const canUpload = isCreator || isPermitted;
+ 
   const handleDeleteRoom = async () => {
     await deleteRoom(roomId);
     navigate("/rooms/mine");
   };
-
+ 
   // Loading state
   if (isLoading) {
     return (
@@ -49,7 +57,7 @@ export const RoomView = () => {
       </div>
     );
   }
-
+ 
   // Error state
   if (isError || !roomData) {
     return (
@@ -68,19 +76,19 @@ export const RoomView = () => {
       </div>
     );
   }
-
+ 
   return (
     <div className="bg-[#0d0e13] min-h-screen text-[#e3e1e9] font-['Inter']">
       <SideBar />
       <NavBar />
-
+ 
       <main className="lg:pl-[220px] pt-16 min-h-screen pb-24 lg:pb-12">
         <div className="pt-10 px-6 lg:px-12 max-w-7xl mx-auto">
-
+ 
           {/* Room header */}
           <section className="pb-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-
+ 
               {/* Left — info */}
               <div className="space-y-2 max-w-2xl">
                 <h2 className="text-4xl lg:text-5xl font-extrabold tracking-tighter font-['Manrope'] text-[#e3e1e9]">
@@ -108,7 +116,7 @@ export const RoomView = () => {
                   </span>
                 </div>
               </div>
-
+ 
               {/* Right — actions */}
               <div className="flex items-center gap-3 flex-wrap">
                 {/* Permissions + Edit — creator only */}
@@ -137,19 +145,21 @@ export const RoomView = () => {
                     </button>
                   </>
                 )}
-
-                {/* Upload — everyone */}
-                <button
-                  onClick={() => setIsUploadOpen(true)}
-                  className="px-6 py-2.5 bg-gradient-to-br from-[#508ff8] to-[#2563EB] text-white font-bold text-sm rounded-xl shadow-lg shadow-[#508ff8]/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2"
-                >
-                  <Upload size={16} />
-                  Upload
-                </button>
+ 
+                {/* Upload — creator or permitted users only */}
+                {canUpload && (
+                  <button
+                    onClick={() => setIsUploadOpen(true)}
+                    className="px-5 py-2.5 bg-[#4F8EF7] hover:bg-[#6ba3f9] text-white text-sm font-bold rounded-xl transition-all flex items-center gap-2"
+                  >
+                    <Upload size={15} />
+                    Upload
+                  </button>
+                )}
               </div>
             </div>
           </section>
-
+ 
           {/* Tab navigation */}
           <div className="flex items-center gap-8 border-b border-[#424753]/10 mb-8">
             <button
@@ -168,7 +178,7 @@ export const RoomView = () => {
                 {roomData.imageCount}
               </span>
             </button>
-
+ 
             <button
               onClick={() => setActiveTab("videos")}
               className={`pb-4 text-sm font-bold flex items-center gap-2 border-b-2 transition-colors ${
@@ -186,31 +196,31 @@ export const RoomView = () => {
               </span>
             </button>
           </div>
-
+ 
           {/* Tab content */}
           {activeTab === "images" ? (
             <ImageGrid roomId={roomId} />
           ) : (
             <VideoGrid roomId={roomId} />
           )}
-
+ 
         </div>
       </main>
-
+ 
       {/* Modals & drawer */}
       <PermissionsDrawer
         isOpen={isPermissionsOpen}
         onClose={() => setIsPermissionsOpen(false)}
         roomId={roomId}
       />
-
+ 
       <UploadModal
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
         roomId={roomId}
         mode={activeTab === "images" ? "image" : "video"}
       />
-
+ 
       {/* Edit room — reuses CreateRoomModal, just different title */}
       <CreateRoomModal
         isOpen={isEditOpen}
@@ -223,7 +233,7 @@ export const RoomView = () => {
           thumbnailUrl: roomData.thumbnailUrl,
         }}
       />
-
+ 
       {/* Delete room confirmation */}
       <ConfirmModal
         isOpen={isDeleteOpen}
