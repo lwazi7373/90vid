@@ -6,10 +6,10 @@ export const permissionKeys = {
   roomPermissions: (roomId: number) => [...permissionKeys.all, 'room', roomId] as const,
 };
 
-export const useGetPermittedUsers = (roomId: number) => {
+export const useGetPermittedUsers = (roomId: number, enabled = true) => {
   return useQuery({
     queryKey: permissionKeys.roomPermissions(roomId),
     queryFn: () => permissionApi.getPermittedUsers(roomId),
-    enabled: !!roomId,
+    enabled: !!roomId && enabled,
   });
 };

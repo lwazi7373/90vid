@@ -18,7 +18,7 @@ export const PermissionsDrawer = ({ isOpen, onClose, roomId }: PermissionsDrawer
   const [grantTarget, setGrantTarget] = useState<SearchedUser | null>(null);
   const [revokeTarget, setRevokeTarget] = useState<PermittedUser | null>(null);
 
-  const { data: permittedData, isLoading: isLoadingPermitted } = useGetPermittedUsers(roomId);
+  const { data: permittedData, isLoading: isLoadingPermitted } = useGetPermittedUsers(roomId, isOpen);
   const { data: searchData, isLoading: isSearching } = useSearchUsers(searchQuery);
 
   const { mutateAsync: permitUser, isPending: isGranting } = usePermitUser(roomId);
